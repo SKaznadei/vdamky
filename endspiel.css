@@ -1,0 +1,324 @@
+@font-face {
+	font-family: "OldStandardTT_Regular";
+	src: url("fonts/Old_Standard_TT/OldStandardTT_Regular.woff2");
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+	font-family: "OldStandardTT_Bold";
+	src: url("fonts/Old_Standard_TT/OldStandardTT_Bold.woff2");
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "OldStandardTT_Italic";
+	src: url("fonts/Old_Standard_TT/OldStandardTT_Italic.woff2");
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Draughts Utrecht";
+	src: url("fonts/Draughts_Utrecht/Draughts_Utrecht.ttf");
+	font-style: normal;
+	font-display: block;
+}
+
+
+@font-face {
+    font-family: "LGame Pi ChessDraughts";
+    src: url("fonts/LGamePi-ChessDraughts/LGamePi-ChessDraughts.woff2")  format("woff2");
+    font-style: normal;
+    font-display: block;
+}
+
+body{
+    color: #000;
+	font-family: "OldStandardTT_Regular", serif;  
+    font-size: 22px;
+    line-height: 26px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+h1 {
+    font-size: 56px;
+    line-height: 60px;
+}
+
+h2 {
+    font-size: 38px;
+    line-height: 40px;
+}
+
+h3 {
+    font-size: 28px;
+    line-height: 32px;
+}
+
+h4 {
+    font-size: 24px;
+    line-height: 28px;
+}
+
+h5 {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+h6 {
+    font-size: 18px;
+    line-height: 28px;
+}
+
+h7 {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+h1,h2,h3,h4,h5,h6,h7,b,.strong {
+	font-family: "OldStandardTT_Bold", serif;
+	font-weight:500;
+}
+
+h2,h3,h4,h5,h6,.img,figcaption,.navigation,.diag {
+    margin: 4px;
+    text-align: center;
+}
+    
+i, def,.variant,.italic {
+	font-family: "OldStandardTT_Italic", serif; 
+	font-style: normal;
+}    
+
+ul {
+    margin: 10px;
+    padding: 0px;
+}
+
+img {
+    max-width: 100%;
+}
+
+h3,h4,.notice,.navigation,[id]:target {
+    border: solid 1.0px brown;
+    border-radius: 7px;
+    padding: 3pt;
+}  
+
+article {
+    width: 900px;
+    margin: auto;
+    counter-reset: footnotes;
+}
+
+.container {
+	display: flex;
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.column-2 {
+    width: calc(100% / 2);
+}
+
+.column-3,.navigation {
+    width: calc(100% / 3);
+}
+
+.hod {
+	width: 25%;
+}
+
+.subscribe {
+	width: 75%;	
+    padding: 3px;
+	margin-left: 5px;
+}
+
+.clear {
+	clear: both; 
+}
+    
+.super {
+	vertical-align:super; 
+	font-size: 60%; 
+	margin-left: 0.1em; 
+}
+
+.variant {
+    color: darkgreen;
+}
+
+table {
+	border-collapse: collapse; 
+    border: 2px solid black;
+	table-layout: fixed; 
+	position: relative; 
+	text-align: center;  
+	margin: auto;
+}
+
+caption.main {
+	text-align: left;
+    padding: 10px;
+    padding: 5px 0px 5px 0px;
+    font-weight: bold;
+}
+
+.bottom {
+	caption-side: bottom;
+}
+
+th {
+	padding: 0px 2px 0px 2px;
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;
+	background-color: WhiteSmoke;
+}
+
+td {
+	padding: 0px 2px 0px 2px;
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;
+}
+
+td.metod {
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;
+	text-align: left;
+}
+	
+td.metodx {
+	border: 2px solid Gainsboro; 
+	vertical-align: middle; 
+}
+
+th.moitabl1 {
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;  
+	width: 36%;
+	background-color: WhiteSmoke;
+}
+
+th.moitabl2 {
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;  
+	width: 11%;
+	background-color: WhiteSmoke;
+}
+
+th.moitabl3 {
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;  
+	width: 6%;
+	background-color: WhiteSmoke;
+}
+
+th.moitabl4 {
+	border: 2px solid Gainsboro; 
+	vertical-align: middle;  
+	width: 5%;
+	background-color: WhiteSmoke;
+}
+
+.mirror {
+	transform: scaleX(-1);
+}
+
+[id^="ref"] {
+    counter-increment: footnotes; 
+    text-decoration: none; 
+}
+
+[id^="ref"]:after {
+    content: "[" counter(footnotes) "]"; 
+    vertical-align: super; 
+    font-size: 60%; 
+    margin-left: .1em;
+}
+
+[href^="#ref"] {
+    text-decoration: none;
+}
+
+[id^="node"]:target {
+    background: aqua;
+}
+
+figcaption {
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+}
+
+figure.fig {
+    margin: 0;
+	display: inline-block;
+   }
+
+summary.spoyler {
+	text-decoration: underline;
+}
+
+a:link {
+    color: black;
+	text-decoration: underline;
+}
+
+a:hover {
+    color: sienna;
+    text-decoration: underline;
+}
+
+a:visited {
+	color: red;
+}
+
+td {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+th {
+  border: 2px solid black;
+  padding: 10px 20px;
+  background-color: Moccasin;
+}
+
+td {
+  text-align: center;
+}
+
+.navigation{
+    font-size: 120%;
+    color: Black;
+}
+
+.diag_utr {
+    font-family: "Utrecht";
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.diag {
+    font-family: "LGame Pi ChessDraughts";
+	font-stretch: normal;
+    font-size: 24px;
+    line-height: 24px;
+}
+
+.square {
+    list-style: square;
+}
+  
+.diag p+p {
+    font-size:20px;
+}
