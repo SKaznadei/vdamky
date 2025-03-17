@@ -13,7 +13,7 @@ Copyright (C) <2011>  <Arthur Kalverboer>.
 	xmlns:xlink	= "http://www.w3.org/1999/xlink"
 	width		= "1440"
 	height		= "780"
-	viewBox		= "100 100 1200 650"
+	viewBox		= "0 0 1440 780"
 	preserveAspectRatio = "xMinYMin" 
 	onmousedown	= "showCoord(evt)"
 	onload		= "initApplication()" >
