@@ -1,0 +1,1761 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!--
+DamDemo 11.03 (березень 2011) це програма анімації для шашок.
+Copyright (C) <2011>  <Arthur Kalverboer>.
+Ця програма є безкоштовним програмним забезпеченням: ви можете поширювати її та/або змінювати відповідно до умов GNU General Public License. Дивись <http://www.gnu.org/licenses/>.
+Інформація: [arthur.kalverboer] на [hetnet.nl]
+-->
+
+<svg	version		= "1.1"
+	id		= "draughts_board"
+	xmlns		= "http://www.w3.org/2000/svg"  
+	xmlns:xlink	= "http://www.w3.org/1999/xlink"
+	width		= "1440"
+	height		= "780"
+	viewBox		= "700 20 680 730"
+	preserveAspectRatio = "xMinYMin" 
+	onmousedown	= "showCoord(evt)"
+	onload		= "initApplication()" >
+	<!--	viewBox		= "0 0 1440 780"    (x y висота ширина) 1440x780-->
+	<!--	viewBox		= "700 20 680 730"  МАЛИЙ Зменшити розмір за допомогою html-->
+	<!--	viewBox		= "100 100 1200 650"  ВЕЛИКИЙ Зменшити розмір за допомогою html-->
+
+<defs>
+	<!-- атрибути, що згадані в defs, не можна оновити за допомогою скрипту!! -->
+	<rect id="lightsquare"	x="0" y="0" width="1" height="1" stroke="none" fill="wheat"/>
+
+	<g id="group_of_darksquares">
+		<g id="darksquare">	<!-- normal darksquare -->
+			<rect x="0" y="0" width="1" height="1" fill="peru" />
+		</g>
+		<g id="darksquare2">	<!-- darksquare with dot -->
+			<rect x="0" y="0" width="1" height="1" fill="peru" />
+			<circle id="dotMark" cx="0.5" cy="0.5" r=".2" fill="orange" />
+		</g>
+		<g id="darksquare3">	<!-- darksquare with red stroke -->
+			<rect x="0" y="0" width="1" height="1" stroke="none" fill="peru" />
+			<rect x="0.025" y="0.025" width="0.95" height="0.95" stroke="red" stroke-width="0.05"
+				fill="none" />
+		</g>
+		<g id="darksquare4">	<!-- darksquare with green stroke -->
+			<rect x="0" y="0" width="1" height="1" stroke="none" fill="peru" />
+			<rect x="0.025" y="0.025" width="0.95" height="0.95" stroke="lime" stroke-width="0.05"
+				fill="none" />
+		</g>
+		<g id="darksquare5">	<!-- darksquare with chocolate fill -->
+			<rect x="0" y="0" width="1" height="1" stroke="none" fill="chocolate" />
+		</g>
+	</g>
+
+	<linearGradient id="lgWhite">
+		<stop style="stop-color: grey; stop-opacity: 1;" offset="0"/>
+		<stop style="stop-color: seashell; stop-opacity: 1;" offset="0.8"/>  	<!-- try -->
+		<stop style="stop-color: seashell; stop-opacity: 1;" offset="1"/>
+	</linearGradient>
+	<linearGradient id="lgBlack">
+		<stop style="stop-color: black; stop-opacity: 1;" offset="0"/>
+		<stop style="stop-color: grey; stop-opacity: 1;" offset="0.7"/>  	<!-- try -->
+		<stop style="stop-color: grey; stop-opacity: 1;" offset="1"/>
+	</linearGradient>
+	<linearGradient id="lgFrame" gradientTransform="rotate(45)">
+		<stop offset="0%" stop-color="grey"/>
+		<stop offset="50%" stop-color="grey"/>  -->
+		<stop offset="100%" stop-color="beige"/>
+	</linearGradient>
+
+	<linearGradient id="lgButton" gradientTransform="rotate(45)">
+		<stop offset="0%" stop-color="white"/>
+		<stop offset="50%" stop-color="white"/>  -->
+		<stop offset="100%" stop-color="white"/>
+	</linearGradient>
+
+	<g id="buttonDef" >
+		<rect id="button" x="0" y="0" width="80" height="50" fill="wheat" 					stroke="navy" rx = "2" ry = "2" />
+	</g>
+
+	<g id="w01" transform="scale(0.0045,0.0045) translate(15,0)">
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 -190,0 z"
+			style="fill:url(#lgWhite) seashell; stroke: black; stroke-width:3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 0,-60 -190,-60 -190,0 z"
+			style="fill: seashell; stroke: black; stroke-width:3" />
+	</g>
+
+	<g id="b01" transform="scale(0.0045,0.0045) translate(15,0)">
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 -190,0 z"
+			style="fill:url(#lgBlack) black; stroke: white; stroke-width:3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 0,-60 -190,-60 -190,0"
+			style="fill: black; stroke: white; stroke-width:3" />
+	</g>
+
+	<g id="W01" transform="scale(0.0045,0.0045) translate(15,0)">
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			style="fill: url(#lgWhite) white; stroke: black; stroke-width:3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			style="fill: url(#lgWhite) white; stroke: black; stroke-width:3" />
+		<path	d="M 0,70 c 0,60 190,60 190,0 c 0,-60 -190,-60 -190,0 z"
+			style="fill: white; stroke: black; stroke-width:3" />
+	</g>
+	<g id="B01" transform="scale(0.0045,0.0045) translate(15,0)">
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			style="fill: url(#lgBlack) black; stroke: white; stroke-width: 3;"/>
+		<path	d="M 0,105 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			style="fill: url(#lgBlack) black; stroke: white; stroke-width: 3;"/>
+		<path	d="M 0,70 c 0,60 190,60 190,0 c 0,-60 -190,-60 -190,0 z"
+			style="fill: black; stroke: white; stroke-width:3;"/>
+	</g>
+
+	<g id="w02" transform="scale(1,1) translate(0,0)">
+		<circle id="white" cx=".5" cy=".5" r=".4" style="fill:#fff9f4;stroke:black;stroke-width:.05;" />
+	</g>
+
+	<g id="W02" transform="scale(1,1) translate(0,0)">
+		<circle id="white" cx=".5" cy=".5" r=".4" style="fill:#fff9f4;stroke:black;stroke-width:.05;" />
+		<path transform="scale(0.0053) translate(30,30)"
+			d="m 64.000,31.485 28.902,36.128 28.902,-36.128 -7.226,65.030 -101.158,0 L 6.195,31.485 35.098,67.613 64.000,31.485 z" style="fill: gold; stroke: black; stroke-width:4" />
+	</g>
+
+	<g id="b02" transform="scale(1,1) translate(0,0)">
+		<circle id="black" cx=".5" cy=".5" r=".4" style="fill:#c40000 ;stroke:black;stroke-width:.05;" />
+	</g>
+
+	<g id="B02" transform="scale(1,1) translate(0,0)">
+		<circle id="black" cx=".5" cy=".5" r=".4" style="fill:#c40000;stroke:black;stroke-width:.05;" />
+		<path transform="scale(0.0053) translate(30,30)"
+			d="m 64.000,31.485 28.902,36.128 28.902,-36.128 -7.226,65.030 -101.158,0 L 6.195,31.485 35.098,67.613 64.000,31.485 z" style="fill: gold; stroke: white; stroke-width:4" />
+	</g>
+
+	<g id="w03" transform="scale(0.0045,0.0045) translate(15,0)" >
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 -190,0 z" 
+			fill="white" stroke= "black" stroke-width="3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 0,-60 -190,-60 -190,0 z"
+			fill="white" stroke= "black" stroke-width="3" />
+		<ellipse cx="95" cy="105" rx="50" ry="15" 
+			fill="none" stroke= "black" stroke-width="3"/>
+	</g>
+	<g id="b03" transform="scale(0.0045,0.0045) translate(15,0)" >
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 -190,0 z"
+			fill="black" stroke= "white" stroke-width="3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 0,-60 -190,-60 -190,0"
+			fill="black" stroke= "white" stroke-width="3" />
+		<ellipse cx="95" cy="105" rx="50" ry="15" 
+			fill="none" stroke= "white" stroke-width="3"/>
+	</g>
+	<g id="W03" transform="scale(0.0045,0.0045) translate(15,0)" >
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			fill="white" stroke= "black" stroke-width="3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			fill="white" stroke= "black" stroke-width="3" />
+		<path	d="M 0,70 c 0,60 190,60 190,0 c 0,-60 -190,-60 -190,0 z"
+			fill="white" stroke= "black" stroke-width="3" />
+		<ellipse cx="95" cy="70" rx="50" ry="15" 
+			fill="none" stroke= "black" stroke-width="3"/>
+	</g>
+	<g id="B03" transform="scale(0.0045,0.0045) translate(15,0)" >
+		<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			fill="black" stroke= "white" stroke-width="3" />
+		<path	d="M 0,105 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+			fill="black" stroke= "white" stroke-width="3" />
+		<path	d="M 0,70 c 0,60 190,60 190,0 c 0,-60 -190,-60 -190,0 z"
+			fill="black" stroke= "white" stroke-width="3" />
+		<ellipse cx="95" cy="70" rx="50" ry="15" 
+			fill="none" stroke= "white" stroke-width="3"/>
+	</g>
+
+	<g id="rotateArrow" >
+		<path id="rA_line" d="M 10,0 10,20 A 28,28 0 0 0 40,50 "
+		    style=" fill: none; stroke-width: 10; stroke: #c40000;"/>
+		<path id="rA_triangle" d="M 40,50 L 40,30 60,50 40,70 40,50 "
+		    style=" fill: none; stroke-width: 10; stroke: #c40000;"/>
+	</g>
+	<g id= "movePointerRect" transform="translate(0 0)" >
+		<rect id = "movePointerRect1" x="0" y="0" width="300" height="50" 
+			fill="papayawhip" stroke="navy" stroke-width="2" />
+		<rect id = "movePointerRect2" x="0" y="0" width="1" height="50" 
+			fill="darkseagreen" stroke="#c40000" stroke-width="2" />
+	</g>
+	<g id= "movePointerCircle" transform="translate(0 0)" >
+		<circle id = "movePointerCircle1" cx="0" cy="0" r="25"
+			fill="papayawhip" stroke="#c40000" stroke-width="1" />
+		<circle id = "movePointerCircle2" cx="0" cy="0" r="1" fill="darkseagreen" 
+			stroke="#c40000" stroke-width="1" />
+	</g>
+	<g id="buttonPrevMove" onclick="prevMove()" transform="translate(0 0)">
+		<rect id="butPrevMove" width="60" height="50" fill="wheat" stroke="black" />
+		<text id="butPrevMoveText" x="20" y="35" font-size="30" font-weight="bold" fill="#c40000" > &lt; </text>
+	</g>
+	<g id="buttonNextMove" onclick="nextMove()" transform="translate(0 0)">
+		<rect id="butNextMove" width="60" height="50" fill="wheat" stroke="black" />
+		<text id="butNextMoveText" x="20" y="35" font-size="30" font-weight="bold" fill="#c40000" > &gt; </text>
+	</g>
+	<g id="buttonMoveForward" onclick="moveForward(4)" transform="translate(0 0)">
+		<rect id="butMoveForward" width="60" height="50" fill="wheat" stroke="black" />
+		<text id="butMoveForwardText" x="14" y="35" font-size="30" font-weight="bold" fill="#c40000" > &gt;&gt; </text>
+	</g>
+	<g id="buttonMoveBack" onclick="moveBackward(4)" transform="translate(0 0)">
+		<rect id="butMoveBack" width="60" height="50" fill="wheat" stroke="black" />
+		<text id="butMoveBackText" x="12" y="35" font-size="30" font-weight="bold" fill="#c40000" > &lt;&lt; </text>
+	</g>
+	<g id="buttonResetGame" onclick="resetGame()" transform="translate(0 0)">
+		<rect id="bgResetGame" width="60" height="50" fill="wheat" stroke="black" />
+		<g id = "resetGameIconGroup" transform= "scale(0.85,0.85) translate(20 9)">
+			<path id="resetGameIcon" d="M 0,0 0,40 M 10,0 30,20 10,40 10,0"
+				    style=" fill: none; stroke-width: 3; stroke: #c40000;"/>
+		</g>
+	</g>
+	<g id="buttonAutoON" onclick="auto3OnOff()" transform="translate(0 0)">
+		<rect id="bgAutoON" width="60" height="50" fill="wheat" stroke="black" />
+		<circle id="bgOnOffDot" cx="30" cy="25" r="18" fill="gold" stroke="#c40000" stroke-width="2" />
+		<circle id="onoffDot" cx="30" cy="25" r="13" fill="darkseagreen" stroke="navy" stroke-width="1" />
+	</g>
+	<g id="buttonChangePiece" onclick="changePieceShape()" transform="translate(0 0)">
+		<rect id="bgChangePiece" width="60" height="50" fill="wheat" stroke="black" />
+		<g id="pieceIcon" transform="scale(0.22,0.22) translate(37,10)" >
+			<path	d="M 0,140 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+				fill="beige"  stroke= "#c40000" stroke-width="6" />
+			<path	d="M 0,105 c 0,60 190,60 190,0 l 0,-35 l -190,0 z"
+				fill="beige" stroke= "#c40000" stroke-width="6" />
+			<path	d="M 0,70 c 0,60 190,60 190,0 c 0,-60 -190,-60 -190,0 z"
+				fill="beige" stroke= "#c40000" stroke-width="6" />
+			<ellipse cx="95" cy="70" rx="50" ry="15" 
+				fill="none" stroke= "#c40000" stroke-width="6"/>
+		</g>
+
+	</g>
+	<g id="buttonRotateBoard" onclick="rotate_board()" transform="translate(0 0)">
+		<rect id="bgRotate" width="60" height="50" fill="wheat" stroke="black" />
+		<g	id = "rotateIcon" transform= "scale(0.3,0.3) translate(35 -40)">
+			<rect id = "bgRotateIcon" x="0" y="65" width="120" height="120" fill="gold" fill-opacity="0" />
+			<use xlink:href="#rotateArrow" transform= "translate(10 110) rotate(0)" />
+			<use xlink:href="#rotateArrow" transform= "translate(110 140) rotate(180)"/>
+		</g>
+	</g>
+	<g id="buttonSetNumberVisibility" onclick = "setNumberVisibility()" transform="translate(0 0)">
+		<rect id="bgNumberVisibility" width="60" height="50" fill="wheat" stroke="black" />
+		<use id="buttonNumberFace" xlink:href="#darksquare" transform= "translate(7 5) scale(45,40)"
+			stroke="#c40000" stroke-width="0.05"/>
+		<text id="buttonNumberText" x="18" y="35" font-size="25" font-weight="bold" fill="white"> a1</text>
+	</g>
+	<g id="buttonHint" onclick="showHint()" transform="translate(0 0)">
+		<rect id="bgHint" width="60" height="50" fill="wheat" stroke="black" />
+		<text id="hintText" x="24" y="40" font-size="40" fill="#c40000" > ! </text>
+	</g>
+	<g id="buttonShowAbout" onclick = "showAbout()" transform="translate(0 0)">
+		<rect id="bgShowAbout" width="60" height="50" fill="wheat" stroke="black" />
+		<text id="showAboutText" x="20" y="40" font-size="40" fill="#c40000" > ? </text>
+	</g>
+	<g id="buttonPrevGame" onclick="prevGame()" transform="translate(0 0)">
+		<rect id="buttonPrevGame" width="60" height="50" stroke="black" fill="wheat" />
+		<text id="buttonPrevGameText" x="5" y="35" font-size="30" font-weight="bold" fill="#c40000" > &lt;&lt; </text>
+	</g>
+	<g id="buttonNextGame" onclick="nextGame()" transform="translate(0 0)">
+		<rect id="buttonNextGame" width="60" height="50" stroke="black" fill="wheat" />
+		<text id="buttonNextGameText" x="5" y="35" font-size="30" font-weight="bold" fill="#c40000"> &gt;&gt; </text>
+	</g>
+
+
+
+
+</defs>		<!-- END OF DEFS -->
+
+<!-- ECMASCRIPT/JAVASCRIPT -->
+	<script type="text/ecmascript" >
+		<![CDATA[
+			// DECARATIONS
+			var xmlns = "http://www.w3.org/2000/svg"
+			var xlinkns = "http://www.w3.org/1999/xlink"
+
+			var currentGame = new Object()
+				currentGame.movePointer = -1
+				currentGame.mutationPointer = -1
+				currentGame.pieceArray = []
+				currentGame.moveArray = []
+				currentGame.gameCommentLines = []
+				currentGame.moveComment = []
+				currentGame.whitePlayer = ""
+				currentGame.blackPlayer = ""
+				currentGame.markedSquares = []	// масив із пронумерованими клітками "s99"
+				currentGame.autoON = false
+			var application = new Object()
+				application.gamePointer = 0
+				application.pieceShapePointer = 0
+				application.rotate = new Boolean(false)		// запам'ятати стан обертання
+				application.busy = new Boolean(false)
+				application.autoSkip = new Boolean(false)
+				application.showNumbers = new Boolean(false)
+// Початкові дані DamDemo
+// Вкажіть дані розташування шашок і ходи для game[0], game[1], тощо. 
+// pieces: Початкова позиція. Рядок sp, де s — номер клітки, а p — якість шашки. Нумерація кліток цифрова, від 01 до 32. Клітка a1 — це номер 01, а клітка h8 — 32. Якість шашок: w — біла проста, W — біла дамка, b — чорна проста, B — чорна дамка. Відділяємо пропуском. Спершу записуємо чорні шашки, потім білі. Після останньої чорної шашки обов'язково робимо пропуск! Запис усіх чорних і білих шашок беремо в лапки ("). Між чорними і білими шашками робимо пропуск, пишемо (+) і ще раз пропуск. Як-от, ["29B 32b " + "01w 08W"] — це позиція БД h2 та проста a1, ЧД b8 і проста h8. 
+// moves: Запис ходів.  Рядок sspp — номер клітки і якість шашки. Спершу пишемо номер клітки з якої йде шашка, потім номер клітки до якої вона йде, далі якість шашки до ходу та останньою якість шашки після ходу. Ходи відокремлюємо комою та пропуском. Для запису бою зазначаємо окремо кожну початкову та кожну кінцеву клітку, та якість шашки до та після. Запис усіх ходів беремов лапки ("). Як-от, ["2431wW 3109WW"] — бела проста б'є h6:f8, стає дамкою і б'є f8:a3. 
+// gameComment: Коментар до позиції. Усі коментарі беремо в лапки (") та відділяємо комою. Як-от, ["Гра була у 10-му чемпіонаті.", "Білі використали новинку"]. Не більше 6 рядків.
+// moveComment: Коментар до ходу. Усі коментарі беремо в лапки (") та відділяємо комою. Як-от, ["Краще було 6.bc3", "Див. 10-й варіант."]. Не більше 6 рядків.
+// players: Імена гравців. Перше — що грає білими, друге — чорними. Імена беремо в лапки (") і розділяємо комою. Як-от, ["Цирик", "Коган"]
+
+var game = []
+
+game[0] = new Object()
+game[0].pieces = "04B " + "08W 09W 19W"
+game[0].moves = "0931WW; 0411BB; 0804WW; 1124BB; 0418WW; 2402BB; 1905WW; 0209BB 0922BB 05We 18We; 3118WW 22Be;" 
+game[0].gameComment = ["Досконалий трикутник І. І. Чір'єва 1893 рік.", "Позицію отримати не пізніше 5-го ходу білих. 3-я БД будь-де на трійнику.", "Якщо вона на b2 чи g7, то отримаємо лише одну з двох ключових позицій.", "ЧД не пускає на 2-й двійник. Біла дамка йде в будь-який кут трійника."] 
+game[0].moveComment = []
+game[0].moveComment[1] = ["6.a3-c1 див. -й вариант."] 
+game[0].moveComment[5] = ["Є 1-а ключова позиція за 8 ходів. 2-у ключову позицію див. у - варіанті"] 
+game[0].moveComment[6] = ["8… h6-d2 см. 2-й вариант.", "8… h6-g5 см. 3-й вариант.", "ЧД на поле a3 — см. 10-й вариант.", "ЧД на поле a5 — см. 11-й вариант.", "ЧД на поле d8 — см. 15-й вариант.", "ЧД на поле e1 — см. 20-й вариант.", "ЧД на поле h4 — см. 11-й вариант."] 
+game[0].players = []
+
+game[1] = new Object()
+game[1].pieces =  "06B " + "18W 19W 31W"
+game[1].moves = "1910WW; 0613BB 1322BB 10We 18We; 3118WW 22Be;" 
+game[1].gameComment = ["8… h6-d2"] 
+game[1].moveComment = []
+game[1].players = []
+
+game[2] = new Object()
+game[2].pieces =  "24B " + "18W 19W 31W"
+game[2].moves = "2420BB; 3124WW; 2030BB; 2406WW; 3017BB; 1910WW; 1730BB; 1821WW; 3017BB 21We; 0603WW; 1706BB 10We; 0310WW 06Be; " 
+game[2].gameComment = ["8… h6-g5"] 
+game[2].moveComment = []
+game[2].moveComment[3] = ["9… g5-c1 см. 4-й вариант.", "9… g5-h4 см. 5-й вариант."]
+game[2].moveComment[4] = ["Є досконалий трикутник."]
+game[2].moveComment[5] = ["10… d8-h4 см. 6-й вариант."]
+game[2].players = []
+
+game[3] = new Object()
+game[3].pieces =  "20B " + "18W 19W 24W"
+game[3].moves = "2002BB; 1915WW; 0220BB 15We; 2415WW 20Be;" 
+game[3].gameComment = ["9… g5-c1"] 
+game[3].moveComment = []
+game[3].players = []
+
+game[4] = new Object()
+game[4].pieces =  "20B " + "18W 19W 24W"
+game[4].moves = "2016BB; 2406WW; 1630BB; 0617WW; 3016BB; 1827WW; 1630BB 27We; 1926WW; 3021BB 26We; 1726WW 21Be; " 
+game[4].gameComment = ["9… g5-h4"] 
+game[4].moveComment = []
+game[4].moveComment[2] = ["Є досконалий трикутник."]
+game[4].moveComment[3] = ["10… h4-e1 см. 7-й варіант"]
+game[4].players = []
+
+game[5] = new Object()
+game[5].pieces =  "30B " + "06W 18W 19W"
+game[5].moves = "3016BB; 0617WW; 1630BB; 1910WW; 3020BB; 1811WW; 2006BB 0613BB 11We 10We; 1710WW 13Be;" 
+game[5].gameComment = ["10… d8-h4"] 
+game[5].moveComment = []
+game[5].moveComment[2] = ["Построен штык Гоняева."]
+game[5].moveComment[3] = ["11… h4-e1 см. 8-й вариант."]
+game[5].moveComment[5] = ["12… d8-h4 см. 9-й вариант."]
+game[5].players = []
+
+game[6] = new Object()
+game[6].pieces =  "16B " + "06W 18W 19W"
+game[6].moves = "1603BB; 1910WW; 0316BB; 1807WW; 1603BB 07We; 1017WW; 0310BB 06We; 1706WW 10Be;" 
+game[6].gameComment = ["10… h4-e1"] 
+game[6].moveComment = []
+game[6].players = []
+
+game[7] = new Object()
+game[7].pieces =  "16B " + "17W 18W 19W"
+game[7].moves = "1603BB; 1926WW; 0316BB; 1827WW; 1630BB 3021BB 27We 26We; 1726WW 21Be;" 
+game[7].gameComment = ["11… h4-e1"] 
+game[7].moveComment = []
+game[7].players = []
+
+game[8] = new Object()
+game[8].pieces =  "30B " + "10W 17W 18W"
+game[8].moves = "3016BB; 1807WW; 1603BB 0313BB 07We 10We; 1710WW 13Be;" 
+game[8].gameComment = ["12… d8-h4"] 
+game[8].moveComment = []
+game[8].players = []
+
+game[9] = new Object()
+game[9].pieces =  "09B " + "18W 19W 31W "
+game[9].moves = "1822WW; 0927BB 22We; 3122WW 27Be;" 
+game[9].gameComment = ["ЧД на поле a3."] 
+game[9].moveComment = []
+game[9].players = []
+
+game[10] = new Object()
+game[10].pieces =  "17B " + "18W 19W 31W"
+game[10].moves = "3124WW; 1730BB; 2406WW; 3017BB; 1910WW; 1730BB; 1821WW; 3017BB 21We; 0603WW; 1706BB 10We; 0310WW 06Be;" 
+game[10].gameComment = ["ЧД на поле a5."] 
+game[10].moveComment = []
+game[10].moveComment[2] = ["Этот ход проигрывает быстрее.", "9… a5-e1 см. 12-й вариант."]
+game[10].moveComment[3] = ["Построен идеальный треугольник."]
+game[10].moveComment[4] = ["10… d8-h4 см. 6-й вариант."]
+game[10].moveComment[5] = ["Белые могут выиграть другим способом — см. 13-й вариант."]
+game[10].players = []
+
+game[11] = new Object()
+game[11].pieces =  "17B " + "18W 19W 24W "
+game[11].moves = "1703BB; 2415WW; 0317BB; 1923WW " 
+game[11].gameComment = ["9… a5-e1"] 
+game[11].moveComment = []
+game[11].moveComment[2] = ["Построена центральная кривая."]
+game[11].moveComment[3] = ["10… e1-h4 см. 14-й вариант."]
+game[11].moveComment[4] = ["Построен треугольник Петрова."]
+game[11].players = []
+
+game[12] = new Object()
+game[12].pieces =  "30B " + "06W 18W 19W"
+game[12].moves = "3017BB; 0603WW; 1730BB; 1821WW; 3017BB 21We; 1910WW; 1706BB 10We; 0310WW 06Be;" 
+game[12].gameComment = ["2-й способ."] 
+game[12].moveComment = []
+game[12].players = []
+
+game[13] = new Object()
+game[13].pieces =  "03B " + "15W 18W 19W"
+game[13].moves = "0316BB; 1910WW;" 
+game[13].gameComment = ["10… e1-h4"] 
+game[13].moveComment = []
+game[13].moveComment[2] = ["Построен треугольник Петрова."]
+game[13].players = []
+
+game[14] = new Object()
+game[14].pieces =  "30B " + "18W 19W 31W"
+game[14].moves = "3122WW; 3017BB; 1811WW; 1730BB; 1910WW;" 
+game[14].gameComment = ["ЧД на поле d8"] 
+game[14].moveComment = [] 
+game[14].moveComment[1] = ["Построена позиция Панкратова."]
+game[14].moveComment[2] = ["9… d8-g5 см. 16-й вариант.", "9… d8-h4 см. 17-й вариант."]
+game[14].moveComment[3] = ["Построена центральная кривая."]
+game[14].moveComment[4] = ["10… a5-e1 см. 18-й вариант."]
+game[14].moveComment[5] = ["Построен треугольник Петрова."]
+game[14].players = []
+
+game[15] = new Object()
+game[15].pieces =  "30B " + "18W 19W 22W"
+game[15].moves = "3020BB; 1910WW;" 
+game[15].gameComment = ["9… d8-g5"] 
+game[15].moveComment = [] 
+game[15].moveComment[2] = ["Построен крюк треугольника Петрова."]
+game[15].players = []
+
+game[16] = new Object()
+game[16].pieces =  "30B " + "18W 19W 22W"
+game[16].moves = "3016BB; 1811WW; 1630BB; 1910WW;" 
+game[16].gameComment = ["9… d8-h4"] 
+game[16].moveComment = [] 
+game[16].moveComment[2] = ["Построена центральная кривая."]
+game[16].moveComment[3] = ["10… h4-e1 см. 19-й вариант."]
+game[16].moveComment[4] = ["Построен треугольник Петрова."]
+game[16].players = []
+
+game[17] = new Object()
+game[17].pieces =  "17B " + "11W 19W 22W"
+game[17].moves = "1703BB; 1923WW;" 
+game[17].gameComment = ["10… a5-e1"] 
+game[17].moveComment = [] 
+game[17].moveComment[2] = ["Построен треугольник Петрова."]
+game[17].players = []
+
+game[18] = new Object()
+game[18].pieces =  "16B " + "11W 19W 22W"
+game[18].moves = "1603BB; 1923WW;" 
+game[18].gameComment = ["10… h4-e1"] 
+game[18].moveComment = [] 
+game[18].moveComment[2] = ["Построен треугольник Петрова."]
+game[18].players = []
+
+// ECMASCRIPT/JavaScript functions voor DamDemo
+
+function initApplication() {
+	// Init key press event
+
+//	document.onkeypress = press	// function press (= down and up) at key-event
+	document.onkeydown = press	// function down at key-event
+
+	//alert(navigator.appName)	// Firefox == Netscape; Opera == Opera
+	//if(navigator.appName != "Internet Explorer")
+	//document.onkeypress = handler;
+	//else
+	//document.onkeydown = handler;
+
+	application.gamePointer = 0
+	show_gamePointer()
+	showBoardnumbers()
+	initGame()
+}
+
+function nextGame() {
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	var nextPointer = application.gamePointer + 1
+	if (nextPointer < game.length) {
+		application.gamePointer = nextPointer
+		show_gamePointer()
+		initGame() }
+}
+
+function prevGame() {
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	if (application.gamePointer > 0) {
+		application.gamePointer = application.gamePointer - 1
+		show_gamePointer()
+		initGame() }
+}
+
+function show_gamePointer() {
+	// Show text for gamePointer
+	textDisplay = (application.gamePointer +1) + "-й вариант из " + (game.length) + "-ти."
+	var textElement = document.getElementById("gamePointerText")
+	textElement.firstChild.nodeValue = textDisplay
+	// hide buttons in small ControlBox
+	var nextGameButton = document.getElementById("CBsmallGnext")
+	var prevGameButton = document.getElementById("CBsmallGprev")
+	nextGameButton.setAttributeNS(null,'visibility', "visible")
+	prevGameButton.setAttributeNS(null,'visibility', "visible")
+	if ((application.gamePointer + 1) == game.length) { 
+		nextGameButton.setAttributeNS(null,'visibility', "hidden") }
+	if (application.gamePointer == 0) { 
+		prevGameButton.setAttributeNS(null,'visibility', "hidden") }
+}
+
+function initGame() {
+	// Function to initialize a new game. 
+	// alert('creating use element ' + pieces)
+	initInput()
+	clearMarkedSquares()		// clear all marks
+	remove_allPieces()
+	addPieces()
+	currentGame.movePointer = -1
+	currentGame.mutationPointer = -1
+	showComment()
+	show_movePointer()
+	showPlayer()
+}
+
+function resetGame() {
+	// Function to initialize a new game for globals game.
+	// alert('creating use element ' + pieces)
+	// Called by user request.
+	if (application.busy == true) {return 0}	// not allowed to do
+	setAutoON(false)		// для безопасности
+	clearMarkedSquares()		// clear all marks
+	remove_allPieces()
+	addPieces()			// init pieces from input
+	currentGame.movePointer = -1
+	currentGame.mutationPointer = -1
+	showComment()
+	show_movePointer()
+	showPlayer()
+}
+
+function initInput()  {
+	// Reads user-friendly input and copy data to arrays. Makes use of global "game" array.
+	currentGame.pieceArray = []		// make empty
+	if (game[application.gamePointer].pieces == null)	// Check existence "pieces"
+		{ var pieceEntries = [] }
+	else 	{ var pieceEntries = game[application.gamePointer].pieces.split(" ") }
+	for (var key = 0; key < pieceEntries.length; key++) {    // указание!!
+		var piece = pieceEntries[key].trim()
+		if (piece.length > 0) {
+			var pieceOK = checkPieceEntry(piece)
+			if (pieceOK == true) { currentGame.pieceArray.push(piece) }
+			else { alert('Error in piece entry ' + piece + " game " + application.gamePointer) } }
+	}
+
+	currentGame.moveArray = []		// make empty
+	var moveOK = false
+	var move = ""
+
+	if (game[application.gamePointer].moves == null)	// Check existence "moves"
+		{ var moveEntries = [] }
+	else 	{ var moveEntries = game[application.gamePointer].moves.split(";") }
+	for (var key = 0; key < moveEntries.length; key++) {    // указание!!
+		move = moveEntries[key].trim()
+		if (move.length > 0) {
+			moveOK = checkMoveEntry(move)
+			if (moveOK == true) { currentGame.moveArray.push(move) }
+			else { alert('Error in move entry ' + move + " game " + application.gamePointer) }
+		}
+	}
+	var mutOK = false
+	var mutEntries = []
+	for (var key1 = 0; key1 < currentGame.moveArray.length; key1++) {    // указание!!
+		move = currentGame.moveArray[key1]
+		mutEntries = move.split(" ")
+		var mutArray = []	// make empty
+		for (var key2 = 0; key2 < mutEntries.length; key2++) {    // указание!!
+			mutation = mutEntries[key2].trim()
+			if (mutation.length > 0) { 
+				mutOK = checkMutEntry(mutation)
+				if (mutOK == true) { mutArray.push(mutation) }
+				else { alert('Error in mutation entry ' + mutation + " game " + application.gamePointer) }
+			}
+		}
+		currentGame.moveArray[key1] = mutArray
+	}
+
+	if (game[application.gamePointer].gameComment == null)	// Check existence gameComment
+		{ currentGame.gameCommentLines = [] }
+	else 	{ currentGame.gameCommentLines = game[application.gamePointer].gameComment }
+
+	//alert("comment: " + currentGame.gameCommentLines)
+
+	if (game[application.gamePointer].moveComment == null)	// Check existence moveComment
+		{ currentGame.moveComment = [] }
+	else 	{ currentGame.moveComment = game[application.gamePointer].moveComment }
+
+	if (game[application.gamePointer].players == null)	// Check existence "players"
+		{ var playerEntries = [] }
+	else 	{ var playerEntries = game[application.gamePointer].players }
+	if (playerEntries.length > 0)
+		{currentGame.whitePlayer = "Белые " + playerEntries[0].trim() }
+	else	{currentGame.whitePlayer = "Белые " }
+	if (playerEntries.length > 1)
+		{currentGame.blackPlayer = "Чёрные " + playerEntries[1].trim() }
+	else	{currentGame.blackPlayer = "Чёрные " }
+}
+
+function checkPieceEntry(piece) {
+	// Check input piece (format: ssp)
+	var pieceOK = true
+	var square = parseInt(piece.slice(0,2), 10)	// base 10!
+	var pieceCode = piece.charAt(2)
+	if (piece.length != 3) { pieceOK = false }
+	if (!(square >= 1 && square <= 32)) { pieceOK = false }
+	if (" wWbB".search(pieceCode) <= 0) { pieceOK = false }
+	// if (pieceOK == false) { alert("piece " + square + " |" + pieceCode + "|") }
+	return pieceOK
+}
+
+function checkMoveEntry(move) {
+	// Voorlopig geen controles te bedenken
+	var moveOK = true
+	return moveOK
+}
+
+function checkMutEntry(mutation) {
+	// Check input mutation (format: sspp)
+	var mutOK = true
+	if ((mutation.length != 4) && (mutation.length != 6) ) { mutOK = false }
+	if (mutation.length == 4) {
+		var square = parseInt(mutation.slice(0,2), 10)		// base 10!
+		var piece1 = mutation.charAt(2)
+		var piece2 = mutation.charAt(3)
+		if (!(square >= 1 && square <= 32)) { mutOK = false }
+		if (" wWbBe".search(piece1) <= 0) { mutOK = false }
+		if (" wWbBe".search(piece2) <= 0) { mutOK = false }
+	}
+	if (mutation.length == 6) {
+		var square1 = parseInt(mutation.slice(0,2), 10)		// base 10!
+		var square2 = parseInt(mutation.slice(2,4), 10)		// base 10!
+		var piece1 = mutation.charAt(4)
+		var piece2 = mutation.charAt(5)
+		if (!(square1 >= 1 && square1 <= 32)) { mutOK = false }
+		if (!(square2 >= 1 && square2 <= 32)) { mutOK = false }
+		if (" wWbB".search(piece1) <= 0) { mutOK = false }	// no 'e' allowed
+		if (" wWbB".search(piece2) <= 0) { mutOK = false }	// no 'e' allowed
+	}
+	return mutOK
+}
+
+function setAutoON(indication) {
+	if (indication == true) {
+		currentGame.autoON = true
+		var onoffDot = document.getElementById("onoffDot")
+		onoffDot.setAttributeNS(null,"fill", "crimson") }		// set if autoON=true
+	if (indication == false) {
+		currentGame.autoON = false
+		var onoffDot = document.getElementById("onoffDot")
+		onoffDot.setAttributeNS(null,"fill", "darkseagreen") }		// set if autoON=true
+}
+
+function remove_allPieces(){
+	var parent_for_pieces = document.getElementById("pieces")
+	var children = parent_for_pieces.childNodes	// use elements for pieces
+	for (var i = children.length-1; i>=0; i--){	// указание!!
+		var anyChild = children.item(i)
+		if (anyChild.nodeName == "use")
+			{ parent_for_pieces.removeChild(anyChild) } }
+}
+
+function addPieces() {
+	for (var key in currentGame.pieceArray) {
+		//alert('adding piece ' + currentGame.pieceArray[key])
+		var pieceString = currentGame.pieceArray[key]
+		var square = "s" + pieceString.slice(0,2)
+		var pieceCode = pieceString.charAt(2)
+		//alert('creating piece2 ' + square + pieceCode)
+		switch (pieceCode){
+			case "w": create_piece(pieceShape("w"), square); break
+			case "W": create_piece(pieceShape("W"), square); break
+			case "b": create_piece(pieceShape("b"), square); break
+			case "B": create_piece(pieceShape("B"), square); break
+			default:  }
+	}
+}
+
+function updatePiecesBACKUP() {
+	// REMOVE/CREATE VERSION
+	// Update attributes (rotate, href) for pieces after rotate or change piecetype
+	// Update = Remove and Add; update with setAttribute gives problems with animating piece-moves.
+	// By animating piece-moves after a rotate-board the change in x and y values are not rotating.
+	// Solution is to create the pieces after a rotate-board. Cloning pieces does not give the solution.
+	var savedPieces = []
+	var pieceGroup = document.getElementById("pieces")
+	var children = pieceGroup.childNodes	// use elements for pieces
+	// Remove and save pieces
+	for (var i = children.length-1; i>=0; i--){	// указание!!
+		var anyChild = children.item(i)
+		if (anyChild.nodeName == "use")	{
+			var pieceId = anyChild.getAttributeNS(null,"id")
+			//alert("pieceId " + pieceId)
+			savedPieces[pieceId] = anyChild.cloneNode(false)
+			pieceGroup.removeChild(anyChild) } }
+
+
+
+	// Create pieces
+	for (var pieceId in savedPieces) {
+		var newPiece = document.createElementNS(xmlns,"use")
+		var xVal = savedPieces[pieceId].getAttributeNS(null,"x")
+		var yVal = savedPieces[pieceId].getAttributeNS(null,"y")
+		newPiece.setAttributeNS(null, "id", pieceId)
+		newPiece.setAttributeNS(null, "x", xVal)
+		newPiece.setAttributeNS(null, "y", yVal)
+		//alert("pieceId xy " + pieceId + xVal + yVal)
+		// update rotation
+		var xRot = xVal + ".5"
+		var yRot = yVal + ".5"
+		if (application.rotate == true)
+			{var newTransform = "rotate(180," + xRot + "," + yRot + ")" }
+		else	{var newTransform = "rotate(0," + xRot + "," + yRot + ")" } 
+		newPiece.setAttributeNS(null,'transform', newTransform)
+		// update pieceShape
+		var oldPieceType = savedPieces[pieceId].href.baseVal	// code: type #w03 for example
+		var newPieceType = pieceShape(oldPieceType.charAt(1))	// depends of pieceShapePointer
+		newPiece.href.baseVal = newPieceType  	 	// get/set AttributeNS werkt niet goed
+		pieceGroup.appendChild(newPiece) }		// !!
+}	// updatePieces
+
+function updatePieces() {
+	// Update attributes (rotate, href) for pieces
+	var pieceGroup = document.getElementById("pieces")
+	var children = pieceGroup.childNodes	// update use elements for pieceGroup
+	for (var key in children) {
+		var child = children.item(key)
+		if (child.nodeName == "use") {
+			// update rotation
+			var xRot = child.getAttributeNS(null,"x") + ".5"
+			var yRot = child.getAttributeNS(null,"y") + ".5"
+			if (application.rotate == true)
+				{var newTransform = "rotate(180," + xRot + "," + yRot + ")" }
+			else	{var newTransform = "rotate(0," + xRot + "," + yRot + ")" } 
+			child.setAttributeNS(null,'transform', newTransform)
+			// update pieceShape
+			var oldPieceType = child.href.baseVal		// code: #w03 for example
+			var newPieceType = pieceShape(oldPieceType.charAt(1))
+			child.href.baseVal = newPieceType  } }		// get/set AttributeNS werkt niet goed
+
+}	// updatePiecesBACKUP
+
+function remove_piece(square){
+	// square is "s99"; piece is "ps99"
+	var parentPiece = document.getElementById("pieces")
+	pieceNode = document.getElementById("p" + square)
+	//alert("pieceNode " + pieceNode + " van " + square)
+	var pieceType = null
+	if (pieceNode != null) { 
+		var pieceType = pieceNode.href.baseVal
+		parentPiece.removeChild(pieceNode) }
+	return pieceType
+}
+
+function create_piece(pieceType, square){
+	// Display a piece by making a use-element for new piece.
+	var squareNode = document.getElementById(square)
+	var xVal = squareNode.getAttributeNS(null,"x")
+	var yVal = squareNode.getAttributeNS(null,"y")
+	//alert('xyVal ' + xVal + yVal + pieceType)
+	var newPiece = document.createElementNS(xmlns,"use")
+	var xRot = xVal + ".5"
+	var yRot = yVal + ".5"
+	if (application.rotate == true)
+		{var newTransform = "rotate(180," + xRot + "," + yRot + ")"}
+	else	{var newTransform = "rotate(0," + xRot + "," + yRot + ")"} 
+
+	//alert('cr pc ' + newTransform + ' en ' + application.rotate )
+
+	newPiece.setAttributeNS(null,'id', "p" + square)
+	newPiece.setAttributeNS(null,'transform', newTransform)
+	// newPiece.setAttributeNS(xlinkns, "xlink:href", pieceType)
+	newPiece.href.baseVal = pieceType	// alternatief voor bovenstaande regel!!
+	newPiece.setAttributeNS(null,"x", xVal)
+	newPiece.setAttributeNS(null,"y", yVal)
+	var parent_for_pieces = document.getElementById("pieces")
+	parent_for_pieces.appendChild(newPiece)
+}
+
+function rotate_board(){
+	// Function to rotate board (= rotate pieces and rotate numbering squares)
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	if (application.rotate == true) {application.rotate = false} else {application.rotate = true}
+
+	if (application.rotate == true)
+		{var newTransform = "rotate(180 5,5)"}
+	else	{var newTransform = "rotate(0,5,5)"} 
+
+	var pieces = document.getElementById("pieces")
+	pieces.setAttributeNS(null,'transform', newTransform)
+
+	var squares = document.getElementById("squares")
+	squares.setAttributeNS(null,'transform', newTransform)
+
+	showPlayer()	// rotate text for players
+
+	//alert('before')
+	updatePieces()
+	//alert('after')
+	showBoardnumbers()
+
+}	// end rotate_board
+
+function showBoardnumbers() {
+	// indicatie wel/niet tonen
+	if (application.showNumbers == false) { 
+		var boardnumberGroup = document.getElementById("boardnumbers")
+		boardnumberGroup.setAttributeNS(null,'visibility', "hidden")
+		return 0 }
+	else {	var boardnumberGroup = document.getElementById("boardnumbers")
+		boardnumberGroup.setAttributeNS(null,'visibility', "visible") }
+
+	if (application.rotate == true)
+		{var newTransform = "rotate(180,5,5)"}
+	else	{var newTransform = "rotate(0,5,5)"} 
+
+	var boardnumberGroup = document.getElementById("boardnumbers")
+	boardnumberGroup.setAttributeNS(null,'transform', newTransform)
+	var boardnumbers = boardnumberGroup.childNodes	
+
+	for (var key in boardnumbers) {
+		var boardnumber = boardnumbers.item(key)
+		if (boardnumber.nodeName == "text") {
+			// update rotation
+			var xRot = boardnumber.getAttributeNS(null,"x")		//  + ".5"
+			var yRot = boardnumber.getAttributeNS(null,"y")		//  + ".5"
+			if (application.rotate == true)
+				{var newTransform = "rotate(180," + xRot + "," + yRot + ")" }
+			else	{var newTransform = "rotate(0," + xRot + "," + yRot + ")" } 
+			boardnumber.setAttributeNS(null,'transform', newTransform)
+		}
+	}
+}
+
+function setNumberVisibility() {
+	// Called by user request
+	if (application.showNumbers == true)
+		{ application.showNumbers = false }
+	else	{ application.showNumbers = true }
+	showBoardnumbers() 
+}
+
+function showComment() {
+	// Show user defined commentrules (gameComment and moveComment)
+	// Empty all commentLines
+	var commentLines = [0,1,2,3,4,5,6,7,8,9,10,11]
+	for (var key = 0; key < commentLines.length; key++) { 
+		elementName = "comment" + key
+		var textElement = document.getElementById(elementName)
+		textElement.firstChild.nodeValue= "" }
+
+	// Remove the two commentlines for small commentbox.
+	var textElement = document.getElementById("commentA")
+	textElement.firstChild.nodeValue= ""
+	var textElement = document.getElementById("commentB")
+	textElement.firstChild.nodeValue= ""
+
+
+	// gameComment
+	for (var key1 = 0; key1 < currentGame.gameCommentLines.length; key1++) { 
+		elementName = "comment" + key1
+		var textElement = document.getElementById(elementName)
+		textElement.setAttributeNS(null,"fill", "navy")
+		textElement.firstChild.nodeValue= currentGame.gameCommentLines[key1] }
+
+	// moveComment (comment before next move)
+	if (currentGame.moveComment[(currentGame.movePointer+1)] != null)
+		{ var moveCommentLines = currentGame.moveComment[(currentGame.movePointer+1)] }
+	else { var moveCommentLines = [] }
+	for (var key2 = 0; key2 < moveCommentLines.length; key2++) { 
+		elementName = "comment" + (key2 + key1)
+		var textElement = document.getElementById(elementName)
+		textElement.setAttributeNS(null,"fill", "#c40000")
+		textElement.firstChild.nodeValue= moveCommentLines[key2]
+	}
+
+	// Add the two commentlines for small commentbox.
+	var textElementA = document.getElementById("commentA")
+	var textElement0 = document.getElementById("comment0")
+	textElementA.firstChild.nodeValue = textElement0.firstChild.nodeValue
+	var textElementB = document.getElementById("commentB")
+	var textElement1 = document.getElementById("comment1")
+	textElementB.firstChild.nodeValue = textElement1.firstChild.nodeValue
+}
+
+function getPlayerToMove() {
+	// Returns which player has to move ("black" or "white" or null).
+	var nextPointer = currentGame.movePointer + 1
+	//	alert("move " + nextPointer)
+	if (nextPointer >= currentGame.moveArray.length) { return null }	// game finished
+	var nextMutation = currentGame.moveArray[nextPointer][0]
+	if (nextMutation.length == 4) {
+		// type mutation: 32we  28eW  Remove w on 32. Create W on 28.
+		var pieceOld = nextMutation.charAt(2) }
+	if (nextMutation.length == 6) { 
+		// type mutation: 3228wW  Move piece w from 32 to 28 and make it W
+		var pieceOld = nextMutation.charAt(4) }
+	switch (pieceOld){
+		case "e": return null
+		case "w": return "white"
+		case "W": return "white"
+		case "b": return "black"
+		case "B": return "black"
+		default: return null }
+	return null
+}
+
+function showPlayer() {
+	// Show user defined names of players on init and toMove-indication.
+	//	alert("playerToMove " + getPlayerToMove())
+	var playerToMove = getPlayerToMove()
+	var textElementLower = document.getElementById("lowerPlayerText")
+	var textElementUpper = document.getElementById("upperPlayerText")
+	var dotElementLower = document.getElementById("lowerPlayerDot")		// indication toMove
+	var dotElementUpper = document.getElementById("upperPlayerDot")		// indication toMove
+
+	//alert("rotate " + application.rotate + currentGame.blackPlayer)
+	if (application.rotate == true) {
+		textElementLower.firstChild.nodeValue = currentGame.blackPlayer 
+		textElementUpper.firstChild.nodeValue = currentGame.whitePlayer
+		if (playerToMove == "white") {
+			dotElementLower.setAttributeNS(null,"visibility", "hidden")
+			dotElementUpper.setAttributeNS(null,"visibility", "visible") }
+		if (playerToMove == "black") {
+			dotElementLower.setAttributeNS(null,"visibility", "visible")
+			dotElementUpper.setAttributeNS(null,"visibility", "hidden") }
+		if (playerToMove == null) {
+			dotElementLower.setAttributeNS(null,"visibility", "hidden")
+			dotElementUpper.setAttributeNS(null,"visibility", "hidden") } }
+	else	{
+		textElementLower.firstChild.nodeValue = currentGame.whitePlayer
+		textElementUpper.firstChild.nodeValue = currentGame.blackPlayer 
+		if (playerToMove == "white") {
+			dotElementLower.setAttributeNS(null,"visibility", "visible")
+			dotElementUpper.setAttributeNS(null,"visibility", "hidden") }
+		if (playerToMove == "black") {
+			dotElementLower.setAttributeNS(null,"visibility", "hidden")
+			dotElementUpper.setAttributeNS(null,"visibility", "visible") }
+		if (playerToMove == null) {
+			dotElementLower.setAttributeNS(null,"visibility", "hidden")
+			dotElementUpper.setAttributeNS(null,"visibility", "hidden") } }
+}
+
+function showCoord(evt) {
+	// Для теста: отображение координат курсора.
+	// Called by user-request
+	var coordText = evt.clientX + " " + evt.clientY
+	//alert('on mousedown: ' + coordText)
+	var textElement = document.getElementById("coordVar")
+	textElement.firstChild.nodeValue= coordText
+	//	var textNode = document.createTextNode("a new text");
+	//	textElement.appendChild(textNode)
+	//	textElement.setAttributeNS(null,"nodeValue", coordText)
+}
+
+function showSquareId(evt, show) {
+	// Show/Hide square-number (onmouseover / onmousout)
+	// Called by user-request VERVALLEN
+	var squareIdText = document.getElementById("squareId")
+	if (show == true) {
+		var squareNode = evt.target
+		var squareId = squareNode.getAttributeNS(null,"id").slice(1,3)  // strip 's'
+		squareIdText.firstChild.nodeValue = squareId	// text to display
+		squareIdText.setAttributeNS(null,"x", evt.clientX)
+		squareIdText.setAttributeNS(null,"y", evt.clientY)
+		squareIdText.setAttributeNS(null,"visibility", "visible") }
+		// squareNode.setAttributeNS(null,"fill","red") 
+	else {
+		squareIdText.setAttributeNS(null,"visibility", "hidden")  }
+}
+
+function nextMove() {
+	// Function to do one move forward (with walking piece).
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	setAutoON(true)
+	application.busy = true
+	application.autoSkip = false	// only one move
+	auto3NextMove()
+}
+
+function nextMoveOLD() {
+	// Function to do one move forward (without walking piece)
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	var nextPointer = currentGame.movePointer + 1
+	if (nextPointer < currentGame.moveArray.length) {
+		currentGame.movePointer = nextPointer
+		showComment()
+		show_movePointer()
+		showPlayer()
+		clearMarkedSquares()		// clear marks
+		var delay = -250
+		var mutArray = currentGame.moveArray[currentGame.movePointer]
+		for (var mutIndex = 0; mutIndex < mutArray.length; mutIndex++) {    // указание!!
+			var mutation = mutArray[mutIndex]
+			// do_mutation(mutation, mutIndex)
+			delay = delay + 300
+			var timer = setTimeout( do_mutation, delay, mutation, mutIndex ) }
+
+	}
+}
+
+
+function prevMove() {
+	// Function to do one move backward.
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	clearMarkedSquares()		// clear marks
+	if (currentGame.movePointer >= 0) {
+		var mutArray = currentGame.moveArray[currentGame.movePointer]
+		for (var mutIndex = mutArray.length-1; mutIndex >= 0; mutIndex--){	// omgekeerde указание!!
+			mutation = mutArray[mutIndex]
+			undo_mutation(mutation) }
+		currentGame.movePointer = currentGame.movePointer - 1
+		showComment()
+		show_movePointer()
+		showPlayer()
+	}
+}
+
+function moveForward(step) {
+	// nextMove for 'step' number of moves
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	clearMarkedSquares()		// clear marks
+	for (var moveIndex = 1; moveIndex <= step; moveIndex++) {
+		var nextPointer = currentGame.movePointer + 1
+		//	alert("moveForward " + nextPointer)
+		if (nextPointer >= currentGame.moveArray.length) { break }
+		currentGame.movePointer = nextPointer
+		var mutArray = currentGame.moveArray[currentGame.movePointer]
+		for (var mutIndex = 0; mutIndex < mutArray.length; mutIndex++) {    // указание!!
+			mutation = mutArray[mutIndex]
+			do_mutation(mutation, -1)  }	// no marks
+	}
+	showComment()
+	show_movePointer()
+	showPlayer()
+}
+
+function moveBackward(step) {
+	// nextMove for 'step' number of moves
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	clearMarkedSquares()		// clear marks
+	for (var moveIndex = 1; moveIndex <= step; moveIndex++) {
+		if (currentGame.movePointer < 0) { break }
+		var mutArray = currentGame.moveArray[currentGame.movePointer]
+		for (var mutIndex = mutArray.length-1; mutIndex >= 0; mutIndex--){	// omgekeerde указание!!
+			mutation = mutArray[mutIndex]
+			undo_mutation(mutation, -1) }
+		currentGame.movePointer = currentGame.movePointer - 1
+	}
+	showComment()
+	show_movePointer()
+	showPlayer()
+}
+
+// ===================================================================================
+function auto1Start() {
+	// Starts auto1 function (delay per move)
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to start
+	setAutoON(true)
+	application.busy = true
+	var initialDelay = 50	// millisec
+	auto1Continue(initialDelay)
+}
+
+function auto1Stop() {
+	// Stops auto1 function
+	// Called by user-request
+	if (application.busy == false) {return 0}	// nothing to stop
+	setAutoON(false)				// try to stop
+}
+
+function auto1Continue(delay) {
+	// Verify conditions for auto1Next to continue auto1 function
+	if (currentGame.autoON == false) {	// stop auto1 function
+		application.busy = false
+		return 0  }
+	var nextPointer = currentGame.movePointer + 1
+	//	alert("nextMove " + nextPointer)
+	if (nextPointer >= currentGame.moveArray.length) {  	// stop auto1 function
+		setAutoON(false)
+		application.busy = false
+		return 0 }
+	var timer = setTimeout( auto1Next, delay)	// schedule next move
+}
+
+function auto1Next() {
+	// Execute next move in auto1 function
+	currentGame.movePointer = currentGame.movePointer + 1
+	showComment()
+	show_movePointer()
+	showPlayer()
+	clearMarkedSquares()		// clear marks
+	var mutArray = currentGame.moveArray[currentGame.movePointer]
+	for (var mutIndex = 0; mutIndex < mutArray.length; mutIndex++) {    // указание!!
+		mutation = mutArray[mutIndex]
+		do_mutation(mutation, mutIndex)  }	// -1 = no marks
+	var delay = 900		// delay auto1 in millisec per move
+	auto1Continue(delay)
+}
+
+// ===================================================================================
+function auto2Start() {
+	// Starts auto function 2 (delay per mutation)
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	setAutoON(true)
+	application.busy = true
+	auto2NextMove()
+}
+
+function auto2Stop() {
+	// Stops auto function 2
+	// Called by user-request
+	if (application.busy == false) {return 0}	// nothing to stop
+	setAutoON(false)				// try to stop
+}
+
+function auto2NextMove() {
+	// Verify conditions for next move and continue auto function 2
+	// Pointersequence: (moveP,mutP)>(-1,-1)>(0,0)>(0,1)>(0,2)>(1,0)>(1,1)>(1,2)>(2,0)>(2,1) etc
+
+	if (currentGame.autoON == false) {		// stop if autoOFF
+		application.busy = false
+		return 0 }
+	var nextMovePointer = currentGame.movePointer + 1
+	if (nextMovePointer >= currentGame.moveArray.length) {	// stop if moves finished
+		setAutoON(false)
+		application.busy = false
+		return 0 }
+	currentGame.movePointer = nextMovePointer
+	showComment()
+	show_movePointer()
+	showPlayer()
+	clearMarkedSquares()		// clear marks
+	var initialDelay = 700		// millisec Gelijk aan andere delay 
+	auto2NextMutation(initialDelay)
+}
+
+function auto2NextMutation(delay) {
+	// Verify conditions for auto2NextMutation to continue auto2DoMutation function
+	// Pointersequence: (moveP,mutP)>(-1,-1)>(0,0)>(0,1)>(0,2)>(1,0)>(1,1)>(1,2)>(2,0)>(2,1) etc
+	var mutArray = currentGame.moveArray[currentGame.movePointer]	// current mutArray
+	var nextMutationPointer = currentGame.mutationPointer + 1
+	if (nextMutationPointer >= mutArray.length)  {	// stop if mutations finished (next move)
+		currentGame.mutationPointer = -1
+		auto2NextMove()
+		return 0 }
+	currentGame.mutationPointer = nextMutationPointer
+	var timer = setTimeout( auto2DoMutation, delay)	// schedule next mutation
+}
+
+function auto2DoMutation() {
+	// Execute next Mutation in auto2 function
+	showComment()
+	show_movePointer()
+	showPlayer()
+	clearMarkedSquares()		// clear marks
+
+	var mutArray = currentGame.moveArray[currentGame.movePointer]
+	var mutIndex = currentGame.mutationPointer
+	var mutation = mutArray[mutIndex]
+	do_mutation(mutation, -1) 	// -1 = no marks
+
+	var delay = 700		// delay in millisec per mutation
+	auto2NextMutation(delay) 
+}
+
+// =AUTO 3==================================================================
+
+function auto3OnOff()  {
+	// Starts and stops auto3 function (with walking piece; delay per shift)
+	// Called by user-request
+	//alert("OnOff " + currentGame.autoON + application.busy)
+	if (currentGame.autoON == true) { auto3Stop(); return 0 }
+	if (application.busy == true) {return 0}	// not allowed to start
+	auto3Start()
+}
+
+function auto3Start() {
+	// Starts auto function 3 (with walking piece; delay per shift)
+	// Called by user-request
+	if (application.busy == true) {return 0}	// not allowed to do
+	setAutoON(true)
+	application.busy = true
+	application.autoSkip = true
+	auto3NextMove()
+}
+
+function auto3Stop() {
+	// Stops auto function 3
+	// Called by user-request
+	// if (application.busy == false) {return 0}	// nothing to stop
+	setAutoON(false)
+}
+
+function auto3NextMove() {
+	// Verify conditions for next move and continue auto function 2
+	// Pointersequence: (moveP,mutP)>(-1,-1)>(0,0)>(0,1)>(0,2)>(1,0)>(1,1)>(1,2)>(2,0)>(2,1) etc
+
+	if (currentGame.autoON == false) {		// stop if autoOFF
+		application.busy = false
+		return 0 }
+	var nextMovePointer = currentGame.movePointer + 1
+	if (nextMovePointer >= currentGame.moveArray.length) {	// stop if end of moves
+		setAutoON(false)
+		application.busy = false
+		return 0 }
+	currentGame.movePointer = nextMovePointer
+	showComment()
+	show_movePointer()
+	showPlayer()
+	clearMarkedSquares()		// clear marks
+
+	auto3NextMutation()
+}
+
+function auto3NextMutation() {
+	// Verify conditions for autoMutationNext to continue autoMutation function
+	// Pointersequence: (moveP,mutP)>(-1,-1)>(0,0)>(0,1)>(0,2)>(1,0)>(1,1)>(1,2)>(2,0)>(2,1) etc
+	var mutArray = currentGame.moveArray[currentGame.movePointer]	// current mutArray
+	var nextMutationPointer = currentGame.mutationPointer + 1
+	if (nextMutationPointer >= mutArray.length)  {	// stop if mutations finished (next move)
+		currentGame.mutationPointer = -1
+		if (application.autoSkip == true) { 
+			auto3NextMove() }
+		else {  setAutoON(false)
+			application.busy = false }	// no next move, stop auto3 function.
+		return 0 }
+	currentGame.mutationPointer = nextMutationPointer
+	var mutation = currentGame.moveArray[currentGame.movePointer][currentGame.mutationPointer]
+	if (mutation.length == 4) {
+		// type mutation: 32we  28eW  Remove w on 32. Create W on 28.
+		auto3NextTake(mutation)
+	}
+	if (mutation.length == 6) { 
+		// type mutation: 3228wW  Move piece w from 32 to 28 and make it W
+		auto3NextShift(mutation)
+	}
+}
+
+function auto3NextTake(mutation) {
+	var delay = 400		// delay auto3 in millisec
+	var timer = setTimeout( auto3DoTake, delay, mutation)	// schedule take with parameter 'mutation'
+}
+
+function auto3DoTake(mutation) {
+	// type mutation: 32we  28eW  Remove w on 32. Create W on 28.
+	var square = "s" + mutation.slice(0,2)
+	var pieceOld = mutation.charAt(2)
+	var pieceNew = mutation.charAt(3)
+	switch (pieceNew){
+		case "e": remove_piece(square); break
+		case "w": create_piece(pieceShape("w"), square); break
+		case "W": create_piece(pieceShape("W"), square); break
+		case "b": create_piece(pieceShape("b"), square); break
+		case "B": create_piece(pieceShape("B"), square); break
+		default:  }
+	// mark squares: set color for mutating squares
+	setSquareMark(square, "#darksquare2") 
+
+	auto3NextMutation() 
+}
+
+
+function auto3NextShift(mutation) {
+	// Start next shift
+	if (currentGame.mutationPointer == 0) { var delay = 400 }	// delay first mutation of move
+	else { var delay = 200 }	// delay between shift-mutations in auto3 (millisec)
+	var squareFrom = "s" + mutation.slice(0,2)
+	var squareTo = "s" + mutation.slice(2,4)
+	// mark squares
+	setSquareMark(squareFrom, "#darksquare5")
+	setSquareMark(squareTo, "#darksquare5") 
+
+	var walkingPiece = document.getElementById("p" + squareFrom)
+	if (walkingPiece == null) {
+		alert("Unknown piece in auto-shift")
+		application.busy = false
+		return 0  }
+	var timer = setTimeout( auto3DoShift, delay, mutation, walkingPiece)	// schedule next move
+}
+
+function auto3DoShift(mutation, walkingPiece) {
+	// Do shift in many little steps
+	// Type of mutation: 3228wW  Move piece w from 32 to 28 and make it W
+	if (walkingPiece == null) { return 0 }
+	var squareFrom = "s" + mutation.slice(0,2)
+	var squareTo = "s" + mutation.slice(2,4)
+	//var pieceFrom = mutation.charAt(4)
+	var pieceTo = mutation.charAt(5)
+
+	var squareFromNode = document.getElementById(squareFrom)
+	var xFrom = parseInt(squareFromNode.getAttributeNS(null,"x"))
+	var yFrom = parseInt(squareFromNode.getAttributeNS(null,"y"))
+	var squareToNode = document.getElementById(squareTo)
+	var xTo = parseInt(squareToNode.getAttributeNS(null,"x"))
+	var yTo = parseInt(squareToNode.getAttributeNS(null,"y"))
+	var xVal = parseFloat(walkingPiece.getAttributeNS(null,"x"))	// Current position (xVal, yVal)
+	var yVal = parseFloat(walkingPiece.getAttributeNS(null,"y"))
+
+	var maxSteps = 8	// number of steps for one mutation
+	var dx = parseFloat(((xTo - xFrom) / maxSteps).toFixed(2))
+	var dy = parseFloat(((yTo - yFrom) / maxSteps).toFixed(2))
+
+	if (Math.abs(xTo - xVal) <= Math.abs(dx)) { var xNew = xTo }	// end must exactly match xTo
+	else { var xNew = xVal + dx }
+	if (Math.abs(yTo - yVal) <= Math.abs(dy)) { var yNew = yTo }	// end must exactly match yTo
+	else { var yNew = yVal + dy }
+	var xRot = (xNew + 0.5).toFixed(2)
+	var yRot = (yNew + 0.5).toFixed(2)
+
+	xNew = xNew.toFixed(2); yNew = yNew.toFixed(2)
+
+	// Als een piece in de groep 'pieces' is gehangen, wordt bij verplaatsing
+	// van dit stuk de bij 'pieces' gedefinieerde rotatie niet uitgevoerd!!
+	// Het stuk gaat na rotatie de verkeerde kant op. Veel geprobeerd. Dit lijkt enige oplossing.
+	// Dus bij verplaatsing: stuk weggooien, kopie aanmaken, verplaatsen, onder 'pieces' hangen.
+	// Hierbij lost de functie cloneNode ipv createElementNS het probleem niet op!!.
+	var pieceType = walkingPiece.href.baseVal	// save before removal
+	var pieceGroup = document.getElementById("pieces")
+	pieceGroup.removeChild(walkingPiece)		// Remove walking piece
+	// Create new walking piece
+	if (application.rotate == true)
+		{var newTransform = "rotate(180," + xRot + "," + yRot + ")"}
+	else	{var newTransform = "rotate(0," + xRot + "," + yRot + ")"} 
+	var newPiece = document.createElementNS(xmlns,"use")
+	newPiece.setAttributeNS(null,'id', "walky")	// dummy id
+	newPiece.setAttributeNS(null,'transform', newTransform)
+	newPiece.href.baseVal = pieceType	// of test: "#B02"
+	newPiece.setAttributeNS(null,"x", xNew)
+	newPiece.setAttributeNS(null,"y", yNew)
+	var pieceGroup = document.getElementById("pieces")
+	pieceGroup.appendChild(newPiece)
+	//alert("xn xnTo" + xnVal + " " + xnValTo + " " + ynVal + " " + ynValTo)
+	if ((xNew == xTo) && (yNew == yTo))  {
+		newPiece.setAttributeNS(null,'id', "p" + squareTo)	// at end change id
+		newPiece.setAttributeNS(null,'x', xTo.toFixed(0))	// at end change x
+		newPiece.setAttributeNS(null,'y', yTo.toFixed(0))	// at end change y
+		newPiece.href.baseVal = pieceShape(pieceTo)
+		auto3NextMutation()  }
+	else {
+		var delay = 50		// delay in millisec
+		var timer = setTimeout( auto3DoShift, delay, mutation, newPiece) }	// recursion
+}  // end auto3DoShift
+
+// ===AUTO 3==============================================================================
+
+function do_mutation(mutation, mutIndex) {
+	// Update board with mutation. Two types with lengths 4 and 6.
+	//alert('mutation ' + mutation)
+	if (mutation.length == 4) {
+		// type mutation: 32we  28eW  Remove w on 32. Create W on 28.
+		var square = "s" + mutation.slice(0,2)
+		var pieceOld = mutation.charAt(2)
+		var pieceNew = mutation.charAt(3)
+		switch (pieceNew){
+			case "e": remove_piece(square); break
+			case "w": create_piece(pieceShape("w"), square); break
+			case "W": create_piece(pieceShape("W"), square); break
+			case "b": create_piece(pieceShape("b"), square); break
+			case "B": create_piece(pieceShape("B"), square); break
+			default:  }
+		// mark squares: set color for mutating squares
+	if (mutIndex >= 0) {
+		setSquareMark(square, "#darksquare2") }
+	}
+	if (mutation.length == 6) { 
+		// type mutation: 3228wW  Move piece w from 32 to 28 and make it W
+		var square1 = "s" + mutation.slice(0,2)
+		var square2 = "s" + mutation.slice(2,4)
+		var pieceOld = mutation.charAt(4)
+		var pieceNew = mutation.charAt(5)
+		switch (pieceNew){
+			case "w": remove_piece(square1); create_piece(pieceShape("w"), square2); break
+			case "W": remove_piece(square1); create_piece(pieceShape("W"), square2); break
+			case "b": remove_piece(square1); create_piece(pieceShape("b"), square2); break
+			case "B": remove_piece(square1); create_piece(pieceShape("B"), square2); break
+			default:  }
+		// mark squares: set color for mutating squares
+	if (mutIndex >= 0) {
+		setSquareMark(square1, "#darksquare5")
+		setSquareMark(square2, "#darksquare5")  }
+	}
+
+}	// end do_mutation
+
+function undo_mutation(mutation) {
+	//alert('mutation ' + mutation)
+	if (mutation.length == 4) {
+		var square = "s" + mutation.slice(0,2)
+		var pieceOld = mutation.charAt(3)
+		var pieceNew = mutation.charAt(2)
+		switch (pieceNew){
+			case "e": remove_piece(square); break
+			case "w": create_piece(pieceShape("w"), square); break
+			case "W": create_piece(pieceShape("W"), square); break
+			case "b": create_piece(pieceShape("b"), square); break
+			case "B": create_piece(pieceShape("B"), square); break
+			default:  }
+	}
+	if (mutation.length == 6) {
+		var square1 = "s" + mutation.slice(0,2)
+		var square2 = "s" + mutation.slice(2,4)
+		var pieceOld = mutation.charAt(5)
+		var pieceNew = mutation.charAt(4)
+		switch (pieceNew){
+			case "w": remove_piece(square2); create_piece(pieceShape("w"), square1); break
+			case "W": remove_piece(square2); create_piece(pieceShape("W"), square1); break
+			case "b": remove_piece(square2); create_piece(pieceShape("b"), square1); break
+			case "B": remove_piece(square2); create_piece(pieceShape("B"), square1); break
+			default:  }
+	}
+}	// end undo_mutation
+
+function setSquareMark(square, mark) {
+	// Set square mark for square with mark (fill or stroke) and color
+	//alert('color ' + square + mark )
+	var squareNode = document.getElementById(square)
+	squareNode.href.baseVal = mark
+	currentGame.markedSquares.push(square)
+}
+
+function clearMarkedSquares() {
+	// Set default values and clear array
+	for (var key in currentGame.markedSquares)  {
+		var squareNode = document.getElementById(currentGame.markedSquares[key])
+		squareNode.href.baseVal = "#darksquare"	}	// default square mark
+	currentGame.markedSquares = []
+}
+
+function show_movePointer() {
+	// movePointer Rectangle
+	var displayRect1 = document.getElementById("movePointerRect1")	// max width
+	var displayRect2 = document.getElementById("movePointerRect2")	// display colorstroke
+	var maxWidth = displayRect1.getAttributeNS(null,"width")
+	var maxMoves = currentGame.moveArray.length
+	var newWidth = maxWidth * ((currentGame.movePointer + 1) / maxMoves)
+	displayRect2.setAttributeNS(null,'width', newWidth)
+	// movePointer Circle
+	var displayCircle1 = document.getElementById("movePointerCircle1")	// max radius
+	var displayCircle2 = document.getElementById("movePointerCircle2")	// display colorfill
+	var maxRadius = displayCircle1.getAttributeNS(null,"r")
+	var maxMoves = currentGame.moveArray.length
+	var newRadius = maxRadius * ((currentGame.movePointer + 1) / maxMoves)
+	displayCircle2.setAttributeNS(null,"r", newRadius)
+}
+
+function showHint() {
+	// Mark first square to move from.
+	// Called by user request.
+	var nextPointer = currentGame.movePointer + 1
+	if (nextPointer < currentGame.moveArray.length) {
+		clearMarkedSquares()		// clear marks
+		var mutArray = currentGame.moveArray[nextPointer]
+		var firstMutation = mutArray[0]
+		var square = "s" + firstMutation.slice(0,2)
+		setSquareMark(square, "#darksquare4") 
+		var delay = 3000	// 3 sec
+		var timer = setTimeout( clearMarkedSquares, delay ) }
+	else { alert("Einde van partij bereikt; geen hint mogelijk") }
+}
+
+function hideControlbox()  {
+	// Changes the display of the controlbox and comment-section.
+	// Called by user request.  VERVALLEN
+	var controlboxGroup = document.getElementById("controlbox")
+	var commentboxGroup = document.getElementById("commentbox")
+	var commentGroup = document.getElementById("commentGroup")
+	var aboutGroup = document.getElementById("aboutGroup")
+	var visibility = controlboxGroup.getAttributeNS(null,"visibility")
+	if (visibility == "hidden")
+		{ controlboxGroup.setAttributeNS(null,'visibility', "visible")
+		  commentboxGroup.setAttributeNS(null,'visibility', "visible") 
+		  commentGroup.setAttributeNS(null,'visibility', "visible")
+		  aboutGroup.setAttributeNS(null,'visibility', "hidden") }
+	else	{ controlboxGroup.setAttributeNS(null,'visibility', "hidden") 
+		  commentboxGroup.setAttributeNS(null,'visibility', "hidden")
+		  commentGroup.setAttributeNS(null,'visibility', "hidden")
+		  aboutGroup.setAttributeNS(null,'visibility', "hidden") }
+}
+
+function changePieceShape()  {
+	// Change pointer for new kind of piece; at end: begin again.
+	// Called by user-request
+	application.pieceShapePointer = (application.pieceShapePointer + 1) % 3	// three pieceShapes
+	updatePieces()
+//	resetGame()
+}
+
+function pieceShape(pieceCode)  {
+	// Returns pieceType: "#w09", "#W09", "#b09", "#B09"
+	// Depending on application.pieceShapePointer.
+	// Parameter pieceCode: w (whiteman), W (whiteking), b (blackman), B(blackking)
+
+	var pieceShapeArray = []
+	pieceShapeArray[0] = ["dummy", "#w01", "#W01", "#b01", "#B01"]
+	pieceShapeArray[1] = ["dummy", "#w02", "#W02", "#b02", "#B02"]
+	pieceShapeArray[2] = ["dummy", "#w03", "#W03", "#b03", "#B03"]
+
+	var pieceNr = 0
+	switch (pieceCode){
+		case "e": pieceNr = 0; break	// "dummy"
+		case "w": pieceNr = 1; break
+		case "W": pieceNr = 2; break
+		case "b": pieceNr = 3; break
+		case "B": pieceNr = 4; break
+		default: pieceNr = 0 }		// "dummy"
+	return pieceShapeArray[application.pieceShapePointer][pieceNr]
+}
+
+function press(evt) {
+	// Key press handling
+	// evt.keyCode : 
+	// Pijltje rechts: code 39 (KEY_RIGHT Links: 37 (KEY_LEFT)
+	var key = evt.keyCode
+	if (key == 37) {
+		// alert("KEY_LEFT: " + evt.keyCode)
+		prevMove() }
+	if (key == 39) {
+		// { alert("KEY_RIGHT: " + evt.keyCode) }
+		nextMove() }
+}
+
+
+String.prototype.trim = function () {
+	// Trim leading and trailing spaces
+	// TEST:
+	// var s = new String(" H e l l o ");
+	// s = s.trim();
+	// alert("!" + s + "!");
+	return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+// end of ECMASCRIPT
+
+		]]>
+	</script>
+
+<!-- START DISPLAY -->
+	<g id="ControlBoxSmall" transform="translate(700 20)">
+ 	  <rect id = "bgControlBoxSmall" width="620" height="730" fill="papayawhip" stroke="navy" stroke-width="1" />
+
+	  <use id="CBsmallGnext" xlink:href="#buttonNextGame"  transform="translate(10 10) scale(0.7, 0.6)" />
+	  <use id="CBsmallGprev" xlink:href="#buttonPrevGame"  transform="translate(10 40) scale(0.7, 0.6)" />
+
+	  <text id="CBsmallcomment" x="0" y = "5" font-size="15" fill="navy" visibility="visible">
+		<tspan id = "commentA" x="60" dy = "30" > Ошибка: нельзя выполнить Javascript </tspan>
+		<tspan id = "commentB" x="60" dy = "30" > - </tspan>
+	  </text>
+	  <!-- <use id="CBsmall00" xlink:href="#movePointerCircle"  x="640"  y = "110" />    -->
+	  <use id="CBsmall00" xlink:href="#movePointerRect"  
+		transform="rotate(0,650,110) translate(530 100) scale(0.2, 0.4)  " />
+	  <use id="CBsmall01" xlink:href="#buttonNextMove"  x="530"  y = "140" />
+	  <use id="CBsmall02" xlink:href="#buttonPrevMove"  x="530"  y = "200" />
+	  <use id="CBsmall03" xlink:href="#buttonMoveForward" x="530"  y = "260" />
+	  <use id="CBsmall04" xlink:href="#buttonMoveBack"  x="530"  y = "320" />
+	  <use id="CBsmall05" xlink:href="#buttonResetGame"  x="530"  y = "380" />
+	  <use id="CBsmall06" xlink:href="#buttonAutoON"  x="530"  y = "440" />
+	  <use id="CBsmall07" xlink:href="#buttonChangePiece"  x="530"  y = "500" />
+	  <use id="CBsmall08" xlink:href="#buttonRotateBoard"  x="530"  y = "560" />
+	  <use id="CBsmall09" xlink:href="#buttonSetNumberVisibility"  x="530"  y = "620" />
+	  <text id="CBsmallApplication" x="525" y = "720" font-size="12" fill="navy" visibility="visible">
+		DamDemo	  </text>
+	</g>
+
+     <g id = "CommentBox" transform="translate(100 100)" >
+	  <rect id= "bg_commentbox" x="0" y="0" width="600" height="400" fill="papayawhip" 
+		stroke="navy" stroke-width="1" />
+	  <text id="commentGroup" x="20" y = "10" font-size="15" fill="navy" visibility="visible">
+		<tspan id = "comment0" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment1" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment2" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment3" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment4" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment5" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment6" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment7" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment8" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment9" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment10" x="20" dy = "30" > - </tspan>
+		<tspan id = "comment11" x="20" dy = "30" > - </tspan>
+	  </text>
+     </g>
+     <g id = "ControlBox" transform="translate(100 500)">
+	<rect id= "CBbg" x="0" y="0" width="600" height="250" fill="papayawhip" 
+		stroke="navy" stroke-width="1" />
+	<g id= "CBmoveControl" transform="translate(10 15)" >
+		<rect id="bgMoveControl" width="580" height="60" fill="papayawhip" stroke="navy" stroke-width="1" />
+		<use id="MCmovePointerR" xlink:href="#movePointerRect"  x="140"  y = "5" />
+		<use id="MCbutPrevMove" xlink:href="#buttonPrevMove"  x="5"  y = "5" />
+		<use id="MCbutMoveBack" xlink:href="#buttonMoveBack"  x="70"  y = "5" />
+		<use id="MCbutMoveForw" xlink:href="#buttonMoveForward"  x="450"  y = "5" />
+		<use id="MCbutNextMove" xlink:href="#buttonNextMove"  x="515"  y = "5" />
+	</g>
+
+	<g id="CBbuttonGroup" transform="translate(10 90)">
+		<rect id="bgButtonGroup" width="580" height="60" fill="papayawhip" stroke="navy" stroke-width="1" />
+		<use id="BGresetGame" xlink:href="#buttonResetGame"  x="5"  y = "5" />
+		<use id="BGautoON" xlink:href="#buttonAutoON"  x="107"  y = "5" />
+		<use id="BGchangePiece" xlink:href="#buttonChangePiece"  x="209"  y = "5" />
+		<use id="BGrotateBoard" xlink:href="#buttonRotateBoard"  x="311"  y = "5" />
+		<use id="BGnumberVisibility" xlink:href="#buttonSetNumberVisibility"  x="413"  y = "5" />
+		<use id="BGhint" xlink:href="#buttonHint"  x="515"  y = "5" />
+	</g>
+0,0.50,0.5
+	<g id= "CBgamePointerControl"  transform="translate(10 165)" >
+		<rect id = "bgGamePointerControl" width="580" height="60" 
+			fill="papayawhip" stroke="navy" stroke-width="1" />
+		<text id = "gamePointerText" text-anchor="middle" x="250" y="40" 
+				font-size="18" fill="navy" > позиция 1 из 1</text>
+
+		<use id="CBprevGame" xlink:href="#buttonPrevGame" x="5" y="5" />
+		<use id="CBnextGame" xlink:href="#buttonNextGame" x="515" y="5" />
+
+	</g>
+	<text id="CBapplication" x="525" y = "240" font-size="12" fill="navy" visibility="visible" >
+		DamDemo	  </text>
+     </g>  <!-- ControlBox -->
+
+
+  <g	id = "board_display" transform="translate(700 100)" >
+     <rect id= "bg_board" x="0" y="0" width="500" height="650" fill="papayawhip" 
+		stroke="navy" stroke-width="1" />
+     <g id = "board" transform="scale(50,50) translate(0, 1.5) ">
+	<g id = "boardframe" transform="scale(0.05) translate(10, 10)" >
+		<!-- stroke for board with perspective -->
+		<polygon id="bf1" points="0,0 180,0 170,10 10,10" fill="burlywood" />
+		<polygon id="bf2" points="0,0 0,180 10,170 10,10" fill="burlywood" />
+		<polygon id="bf3" points="180,0 180,180 170,170 170,10" fill="burlywood"/>
+		<polygon id="bf4" points="0,180 180,180 170,170 10,170" fill="burlywood"/>
+		<polygon id="bfsmall1" points="0,0 180,0 178,2 2,2" fill="beige" />
+		<polygon id="bfsmall2" points="0,0 0,180 2,178 2,2" fill="beige" />
+		<polygon id="bfsmall3" points="180,0 180,180 178,178 178,2" fill="grey" />
+		<polygon id="bfsmall4" points="0,180 180,180 178,178 2,178" fill="grey" />
+		<rect id = "bfinner" x="10" y="10" width="160" height="160" fill="none" 
+			stroke="url(#lgFrame)" stroke-width="2" />
+	</g>
+
+	<g id = "squares" transform="rotate(0,6,6)">
+		<!-- The board -->
+		<rect id="lightsquares" x="1" y="1" width="8" height="8" stroke="none" fill="wheat" />
+		<use id="s01" xlink:href="#darksquare"  x="1"  y = "8" />
+		<use id="s02" xlink:href="#darksquare"  x="3"  y = "8" />
+		<use id="s03" xlink:href="#darksquare"  x="5"  y = "8" />
+		<use id="s04" xlink:href="#darksquare"  x="7"  y = "8" />
+		<use id="s05" xlink:href="#darksquare"  x="2"  y = "7" />
+		<use id="s06" xlink:href="#darksquare"  x="4"  y = "7" />
+		<use id="s07" xlink:href="#darksquare"  x="6"  y = "7" />
+		<use id="s08" xlink:href="#darksquare"  x="8"  y = "7" />
+		<use id="s09" xlink:href="#darksquare"  x="1"  y = "6" />
+		<use id="s10" xlink:href="#darksquare"  x="3"  y = "6" />
+		<use id="s11" xlink:href="#darksquare"  x="5"  y = "6" />
+		<use id="s12" xlink:href="#darksquare"  x="7"  y = "6" />
+		<use id="s13" xlink:href="#darksquare"  x="2"  y = "5" />
+		<use id="s14" xlink:href="#darksquare"  x="4"  y = "5" />
+		<use id="s15" xlink:href="#darksquare"  x="6"  y = "5" />
+		<use id="s16" xlink:href="#darksquare"  x="8"  y = "5" />
+		<use id="s17" xlink:href="#darksquare"  x="1"  y = "4" />
+		<use id="s18" xlink:href="#darksquare"  x="3"  y = "4" />
+		<use id="s19" xlink:href="#darksquare"  x="5"  y = "4" />
+		<use id="s20" xlink:href="#darksquare"  x="7"  y = "4" />
+		<use id="s21" xlink:href="#darksquare"  x="2"  y = "3" />
+		<use id="s22" xlink:href="#darksquare"  x="4"  y = "3" />
+		<use id="s23" xlink:href="#darksquare"  x="6"  y = "3" />
+		<use id="s24" xlink:href="#darksquare"  x="8"  y = "3" />
+		<use id="s25" xlink:href="#darksquare"  x="1"  y = "2" />
+		<use id="s26" xlink:href="#darksquare"  x="3"  y = "2" />
+		<use id="s27" xlink:href="#darksquare"  x="5"  y = "2" />
+		<use id="s28" xlink:href="#darksquare"  x="7"  y = "2" />
+		<use id="s29" xlink:href="#darksquare"  x="2"  y = "1" />
+		<use id="s30" xlink:href="#darksquare"  x="4"  y = "1" />
+		<use id="s31" xlink:href="#darksquare"  x="6"  y = "1" />
+		<use id="s32" xlink:href="#darksquare"  x="8"  y = "1" />
+	</g>
+
+	<g id = "boardnumbers" transform="rotate(0,6,6)">
+		<text x="8.5" y="1.5" font-size="0.4" fill="white" text-anchor="middle" > h8 </text>
+		<text x="6.5" y="1.5" font-size="0.4" fill="white" text-anchor="middle" > f8 </text>
+		<text x="4.5" y="1.5" font-size="0.4" fill="white" text-anchor="middle" > d8 </text>
+		<text x="2.5" y="1.5" font-size="0.4" fill="white" text-anchor="middle" > b8 </text>
+		<text x="7.5" y="2.5" font-size="0.4" fill="white" text-anchor="middle" > g7 </text>
+		<text x="5.5" y="2.5" font-size="0.4" fill="white" text-anchor="middle" > e7 </text>
+		<text x="3.5" y="2.5" font-size="0.4" fill="white" text-anchor="middle" > c7 </text>
+		<text x="1.5" y="2.5" font-size="0.4" fill="white" text-anchor="middle" > a7 </text>
+		<text x="8.5" y="3.5" font-size="0.4" fill="white" text-anchor="middle" > h6 </text>
+		<text x="6.5" y="3.5" font-size="0.4" fill="white" text-anchor="middle" > f6 </text>
+		<text x="4.5" y="3.5" font-size="0.4" fill="white" text-anchor="middle" > d6 </text>
+		<text x="2.5" y="3.5" font-size="0.4" fill="white" text-anchor="middle" > b6 </text>
+		<text x="7.5" y="4.5" font-size="0.4" fill="white" text-anchor="middle" > g5 </text>
+		<text x="5.5" y="4.5" font-size="0.4" fill="white" text-anchor="middle" > e5 </text>
+		<text x="3.5" y="4.5" font-size="0.4" fill="white" text-anchor="middle" > c5 </text>
+		<text x="1.5" y="4.5" font-size="0.4" fill="white" text-anchor="middle" > a5 </text>
+		<text x="8.5" y="5.5" font-size="0.4" fill="white" text-anchor="middle" > h4 </text>
+		<text x="6.5" y="5.5" font-size="0.4" fill="white" text-anchor="middle" > f4 </text>
+		<text x="4.5" y="5.5" font-size="0.4" fill="white" text-anchor="middle" > d4 </text>
+		<text x="2.5" y="5.5" font-size="0.4" fill="white" text-anchor="middle" > b4 </text>
+		<text x="7.5" y="6.5" font-size="0.4" fill="white" text-anchor="middle" > g3 </text>
+		<text x="5.5" y="6.5" font-size="0.4" fill="white" text-anchor="middle" > e3 </text>
+		<text x="3.5" y="6.5" font-size="0.4" fill="white" text-anchor="middle" > c3 </text>
+		<text x="1.5" y="6.5" font-size="0.4" fill="white" text-anchor="middle" > a3 </text>
+		<text x="8.5" y="7.5" font-size="0.4" fill="white" text-anchor="middle" > h2 </text>
+		<text x="6.5" y="7.5" font-size="0.4" fill="white" text-anchor="middle" > f2 </text>
+		<text x="4.5" y="7.5" font-size="0.4" fill="white" text-anchor="middle" > d2 </text>
+		<text x="2.5" y="7.5" font-size="0.4" fill="white" text-anchor="middle" > b2 </text>
+		<text x="7.5" y="8.5" font-size="0.4" fill="white" text-anchor="middle" > g1 </text>
+		<text x="5.5" y="8.5" font-size="0.4" fill="white" text-anchor="middle" > e1 </text>
+		<text x="3.5" y="8.5" font-size="0.4" fill="white" text-anchor="middle" > c1 </text>
+		<text x="1.5" y="8.5" font-size="0.4" fill="white" text-anchor="middle" > a1 </text>
+		</g>
+
+
+	<g id = "pieces" transform="rotate(0,6,6)">
+		<!-- The pieces EXAMPLE data:
+		<use xlink:href="#w01" x="2" y="1" transform="rotate(180,2.5,1.5)"/>
+		<use xlink:href="#w01" x="4" y="2" transform="rotate(180,4.5,2.5)"/>
+		-->
+	</g>	
+    </g>  <!-- board -->
+    <g id="upperPlayerGroup" transform="translate(30 30)">
+	<circle id="upperPlayerDot" cx="10" cy="0" r="10" fill="seagreen" />
+	<text id="upperPlayerText" x="30" y="10" font-size="18" fill="navy"> Чёрные </text>
+    </g>
+    <g id="lowerPlayerGroup" transform="translate(30 620)">
+	<circle id="lowerPlayerDot" cx="10" cy="0" r="10" fill="seagreen" />
+	<text id="lowerPlayerText" x="30" y="10" font-size="18" fill="navy"> Белые </text>
+    </g>
+  </g>   <!-- BoardDisplay -->
+
+
+  <g id="groupShowCoord" transform="translate(20 60)">
+	<rect x="0" y="0" width="600" height="40" fill="brown" fill-opacity="0.2" />
+	<g id="coordText" font-size="18" font-family="Arial,Helvetica">
+		<text x="30" y="25">  Coord:</text>
+		<text id="coordVar" x="100" y="25"> click </text>
+	</g>
+
+	  </g>
+
+
+  <text id = "squareId" x="20"  y = "40" font-size="18pt" fill="#c40000"> 444 </text>
+
+</svg>
+
