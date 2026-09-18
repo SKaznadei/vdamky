@@ -1,140 +1,133 @@
+
+/* cyrillic-ext */
 @font-face {
-	font-family: "OldStandardTT_Regular";
-	src: url("fonts/Old_Standard_TT/OldStandardTT_Regular.woff2");
-    font-style: normal;
+  font-family: 'Ysabeau Infant';
+  font-style: italic;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-NlzpqOkkV94kBTQVdX1EWI_p9Tx80AVxP.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: italic;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-NlzpqOkkV94kBTQVdX1EWI_p9TxY0AVxP.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: italic;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-NlzpqOkkV94kBTQVdX1EWI_p9Txw0AVxP.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: italic;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-NlzpqOkkV94kBTQVdX1EWI_p9TxI0AQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: normal;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-PlzpqOkkV94kBTQVdX1EWI_p1fxAsBQ.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: normal;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-PlzpqOkkV94kBTQVdX1EWI_p8fxAsBQ.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: normal;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-PlzpqOkkV94kBTQVdX1EWI_p2fxAsBQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Ysabeau Infant';
+  font-style: normal;
+  font-weight: 1 1000;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ysabeauinfant/v4/hv-PlzpqOkkV94kBTQVdX1EWI_p4fxA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+
+@font-face{
+	font-family: "DraughtsUtrecht";
+  src: url(fonts/Draughts_Utrecht/Draughts_Utrecht.woff2) format('woff2');
     font-display: swap;
 }
 
-@font-face {
-	font-family: "OldStandardTT_Bold";
-	src: url("fonts/Old_Standard_TT/OldStandardTT_Bold.woff2");
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "OldStandardTT_Italic";
-	src: url("fonts/Old_Standard_TT/OldStandardTT_Italic.woff2");
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "Draughts Utrecht";
-	src: url("fonts/Draughts_Utrecht/Draughts_Utrecht.ttf");
-	font-style: normal;
-	font-display: block;
-}
-
-
-@font-face {
-    font-family: "ChessDraughts";
-    src: url("fonts/LGamePi-ChessDraughts/LGamePi-ChessDraughts.woff2");
-    font-style: normal;
-    font-display: block;
-}
-
-body{
-	color: #000;
-	font-family: "OldStandardTT_Regular", serif;
-	font-size: 22px;
-	line-height: 26px;
-	font-weight: 400;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-}
-
-h1 {
-    font-size: 56px;
-    line-height: 60px;
-}
-
-h2 {
-    font-size: 38px;
-    line-height: 40px;
-}
-
-h3 {
-    font-size: 28px;
-    line-height: 32px;
-}
-
-h4 {
-    font-size: 24px;
-    line-height: 28px;
-}
-
-h5 {
-    font-size: 20px;
-    line-height: 24px;
-}
-
-h6 {
-    font-size: 18px;
-    line-height: 28px;
-}
-
-h7 {
-    font-size: 16px;
-    line-height: 24px;
-}
-
-h1,h2,h3,h4,h5,h6,h7,b,.strong {
-	font-family: "OldStandardTT_Bold", serif;
-	font-weight:500;
-}
-
-h2,h3,h4,h5,h6,.img,figcaption,.navigation,.diag {
-    margin: 4px;
-    text-align: center;
-}
-    
-i, def,.variant,.italic {
-	font-family: "OldStandardTT_Italic", serif; 
-	font-style: normal;
-}    
-
-ul {
-    margin: 10px;
-    padding: 0px;
-}
-
-img {
-    max-width: 100%;
-}
-
-h3,h4,.notice,.navigation,[id]:target {
-    border: solid 1.0px brown;
-    border-radius: 7px;
-    padding: 3pt;
-}  
 
 article {
-    width: 900px;
-    margin: auto;
-    counter-reset: footnotes;
+	width: 100%;
+	margin: auto;
+	counter-reset: footnotes;
+  font-family: "Ysabeau Infant", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+font-size:18px;
+	padding: 5px;
+}
+
+.formula {
+margin: 25px; auto; 5px;  
+}
+
+article h2,article h3,article h4 {
+	padding: 0px 0px 10px 5px;
+	font-weight: 400;
+  border-top: 5px solid MediumSeaGreen;
+background: HoneyDew;
+}
+
+article p {
+	margin-left: 7px;
 }
 
 .container {
+	padding: 10px 0px;
+	text-align: center;
 	display: flex;
-	width: 98%;
+justify-content: center;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
-    margin-top: 3px;
-    margin-bottom: 3px;
 }
 
 .column-2 {
     width: calc(100% / 2);
 }
 
-.column-3,.navigation {
+.column-3 {
     width: calc(100% / 3);
 }
 
-.hod {
-	width: 25%;
+.column-4 {
+    width: calc(100% / 3);
 }
 
 .subscribe {
@@ -146,88 +139,6 @@ article {
 .clear {
 	clear: both; 
 }
-    
-.super {
-	vertical-align:super; 
-	font-size: 60%; 
-	margin-left: 0.1em; 
-}
-
-.variant {
-    color: darkgreen;
-}
-
-table {
-	border-collapse: collapse; 
-    border: 2px solid black;
-	table-layout: fixed; 
-	position: relative; 
-	text-align: center;  
-	margin: auto;
-}
-
-caption.main {
-	text-align: left;
-    padding: 10px;
-    padding: 5px 0px 5px 0px;
-    font-weight: bold;
-}
-
-.bottom {
-	caption-side: bottom;
-}
-
-th {
-	padding: 0px 2px 0px 2px;
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;
-	background-color: WhiteSmoke;
-}
-
-td {
-	padding: 0px 2px 0px 2px;
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;
-}
-
-td.metod {
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;
-	text-align: left;
-}
-	
-td.metodx {
-	border: 2px solid Gainsboro; 
-	vertical-align: middle; 
-}
-
-th.moitabl1 {
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;  
-	width: 36%;
-	background-color: WhiteSmoke;
-}
-
-th.moitabl2 {
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;  
-	width: 11%;
-	background-color: WhiteSmoke;
-}
-
-th.moitabl3 {
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;  
-	width: 6%;
-	background-color: WhiteSmoke;
-}
-
-th.moitabl4 {
-	border: 2px solid Gainsboro; 
-	vertical-align: middle;  
-	width: 5%;
-	background-color: WhiteSmoke;
-}
 
 .mirror {
 	transform: scaleX(-1);
@@ -237,6 +148,7 @@ th.moitabl4 {
     counter-increment: footnotes; 
     text-decoration: none; 
 }
+
 
 [id^="ref"]:after {
     content: "[" counter(footnotes) "]"; 
@@ -253,72 +165,67 @@ th.moitabl4 {
     background: aqua;
 }
 
-figcaption {
-    text-align: center;
-    font-weight: bold;
-    font-style: italic;
+ol.footnotes {
+	padding-left: 1em;
+	font-size: 80%;
 }
 
-figure.fig {
-    margin: 0;
-	display: inline-block;
-   }
-
-summary.spoyler {
-	text-decoration: underline;
+article figcaption {
+text-align: center;
+  font-family: 'Ysabeau Infant'; sans-serif;
+  font-style: italic;
+  font-weight: 400;
+color:Black;
 }
 
-a:link {
-    color: black;
-	text-decoration: underline;
+.diagram {
+    font-family: "DraughtsUtrecht";
+    line-height: 1em;
+	display: block;
+text-align: center;
+	font-style:normal;
+	font-weight:400;
+	width: 10em;
+margin:auto;
+color:DarkSlateGray;
 }
 
-a:hover {
-    color: sienna;
-    text-decoration: underline;
+.quote {
+  margin: 10px 50px;
+	display: block;
+  font-style: italic;
+  border-left: 5px solid MediumSeaGreen;
+  position: relative;
+padding:20px;
+background: HoneyDew;
 }
 
-a:visited {
-	color: red;
+article table, article th, article td {
+border-collapse: collapse; 
+  border: 1px solid DarkGreen; 
 }
 
-td {
-  border: 1px solid black;
-  padding: 10px 20px;
+article table {
+width: 100%; 
+text-align: center; 
+caption-side: top;
+margin: 20px 0px;
 }
 
-th {
-  border: 2px solid black;
-  padding: 10px 20px;
-  background-color: Moccasin;
+.table caption {
+text-align: left;
 }
 
-td {
-  text-align: center;
+article hr {
+  border: none;
+  height: 4px;
+  background: linear-gradient(to right, transparent, DarkGreen, transparent);
 }
 
-.navigation{
-    font-size: 120%;
-    color: Black;
+article h2 {
+font-size:26px;
 }
 
-.diag_utr {
-    font-family: "Utrecht";
-    font-size: 24px;
-    line-height: 24px;
-}
-
-p diag {
-	font-family: "ChessDraughts";
-	font-stretch: normal;
-	font-size: 24px;
-	line-height: 24px;
-}
-
-.square {
-    list-style: square;
-}
-  
-.diag p+p {
-    font-size:20px;
+article h3 {
+font-size:22px;
 }
